@@ -1,0 +1,36 @@
+library(tuneR)
+# hi-hat
+f=file.path('data-raw','wav','hihat.wav')
+w=readWave(f)
+hiHat=soundSample(wave=w@left,rate=w@samp.rate)
+save(hiHat,file=file.path('data','hiHat.RData'))
+# open hi-hat
+f=file.path('data-raw','wav','hihat_o.wav')
+w=readWave(f)
+hiHat_o=soundSample(wave=w@left,rate=w@samp.rate)
+save(hiHat_o,file=file.path('data','hiHat_o.RData'))
+# hi-hat 2
+f=file.path('data-raw','wav','cymbal-hihat-stick.wav')
+w=readWave(f)
+hiHat2=soundSample(wave=w@left,rate=w@samp.rate)
+save(hiHat2,file=file.path('data','hiHat2.RData'))
+# snare
+f=file.path('data-raw','wav','snare.wav')
+w=readWave(f)
+snare=soundSample(wave=w@left,rate=w@samp.rate)
+save(snare,file=file.path('data','snare.RData'))
+# snare 2
+f=file.path('data-raw','wav','drum-snare-tap.wav')
+w=readWave(f)
+snare2=soundSample(wave=w@left,rate=w@samp.rate)
+save(snare2,file=file.path('data','snare2.RData'))
+# kick
+f=file.path('data-raw','wav','kick.wav')
+w=readWave(f)
+kick=soundSample(wave=w@left,rate=w@samp.rate)
+save(kick,file=file.path('data','kick.RData'))
+# kick 2
+f=file.path('data-raw','wav','drum-bass-lo-1.wav')
+w=readWave(f)
+kick2=soundSample(wave=w@left,rate=w@samp.rate)
+save(kick2,file=file.path('data','kick2.RData'))

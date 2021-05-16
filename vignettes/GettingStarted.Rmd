@@ -1,0 +1,238 @@
+---
+title: "The sequenceR package"
+subtitle: "Getting started"
+author: "Ben Renard"
+date: "15/04/2020"
+output: 
+  html_document: 
+    number_sections: yes
+    toc: yes
+vignette: >
+  %\VignetteIndexEntry{Getting started}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=TRUE,results='hide')
+```
+
+# Introduction
+
+A [sequencer](https://en.wikipedia.org/wiki/Music_sequencer) is a device or software for creating musical pieces by editing and combining sound samples. The aim of this package is to provide a minimalistic R-based implementation of the most basic actions typically performed by a sequencer, in particular:
+
+1. Creating **sound samples**.
+2. **Sequencing**, i.e. creating a musical sequence by repeating a given sound sample according to some rythmic pattern.
+3. **Mixing**, i.e. merging several sequences into a single musical piece.
+
+While this package is quite rudimentary compared with existing [sequencers](https://en.wikipedia.org/wiki/List_of_music_sequencers), it allows using the R langage for automating some of these steps, which is particularly useful for data [sonification](https://en.wikipedia.org/wiki/Sonification), as will be illustrated in this vignette.
+
+The package `sequenceR` strongly builds on the package `tuneR` which will be systematically loaded:
+
+```{r}
+library(sequenceR)
+```
+
+# Basics: sound samples, sequencing and mixing.
+
+## Sound sample
+
+### Properties
+
+A `soundSample` is an object containing the following attributes:
+
+1. the [waveform](https://en.wikipedia.org/wiki/Waveform) `wave`, normalized to be smaller than 1 in absolute value.
+2. the `duration` of the sample in seconds.
+3. the sampling `rate`, in number of values per second.
+4. the number of values in the waveform `n`, equal to `rate`*`duration`.
+
+Let's now see three possible ways to create a `soundSample` object.
+
+### Creating a sound sample from scratch
+
+A 0.1-second A note can be created by using a sine wave as shown below:
+
+```{r,results='markup'}
+# a 0.1-second A note
+d <- 0.1 # duration of the sample in seconds
+rate <- 44100 # sampling rate in values per second (this is a typical value and is used as a default throughout this package)
+n <- round(rate*d) # number of values in the waveform
+w <- sin(2*pi*440*seq(0,d,length.out=n)) # waveform (440Hz A note)
+A <- soundSample(wave=w,rate=rate) 
+```
+
+The package provides two methods to `plot` and `listen` to the created `soundSample` object: 
+
+```{r,results='hold'}
+# listen(A) # uncomment to listen to the sample
+plot(A) # plot the sample
+```
+
+The second example below adds some noise to this perfect A note. For more approaches to generate sound, see [sound synthesis](https://en.wikipedia.org/wiki/Synthesizer#Sound_synthesis).
+
+```{r,results='hold'}
+noisyA <- soundSample(wave=w+0.1*rnorm(n))
+# listen(noisyA) # uncomment to listen to the sample
+plot(noisyA)
+```
+
+### Transforming a data series into a sound sample
+
+Instead of generating a sound from mathematical functions, it is possible to use an existing data series and to interpret it as a waveform as shown in the example below. This works better with relatively long series showing some form of seasonality.
+
+```{r,results='hold'}
+sun <- soundSample(sunspots,rate=44100/10) # sampling rate is lowered to get a low pitch
+# listen(sun) # uncomment to listen to the sample
+plot(sun)
+```
+
+### Reading a sound sample from an audio file
+
+A `soundSample` object can also be created by reading an existing audio file (typically a .wav or .mp3). Functions such as `readWave` and `readMP3` are provided by the `tuneR` package for this purpose. The example below shows how to read a .wav file from the [BBC website](http://bbcsfx.acropolis.org.uk/). You can find more sources of audio sound samples on this [website](http://wiki.laptop.org/go/Free_sound_samples).
+
+```{r,results='hold'}
+# Commented out - link does not work - find another source of wav file.
+# # create a temporary file in working directory
+# tfile <- tempfile(tmpdir=getwd())
+# # download a sound sample from the BBC (549 KB)
+# URL <- 'http://bbcsfx.acropolis.org.uk/assets/07042155.wav'
+# download.file(url=URL,destfile=tfile)
+# # read it using tuneR -  this creates a Wave object from tuneR
+# w <- tuneR::readWave(tfile,from=0.35,to=1,units='second')
+# # delete temporary file
+# unlink(tfile)
+
+
+w <- tuneR::readWave('cymbal-hihat-stick.wav')
+#plot Wave
+plot(w)
+```
+
+Note that the `readWave` function returns a `Wave` object (from package `tuneR`), which needs to be turned into a `soundSample` object (from package `sequenceR`).  This can easily be done as shown below. Comparing the plots above and below illustrates the main differences between `Wave` and `soundSample` objects: (1) the latter is mono, while the former may be stero; (2) the latter is standardized so that its maximum absolute value is one.
+
+```{r,results='hold'}
+# create sound Sample 
+sam <- soundSample(wave=w@left,rate=w@samp.rate)
+# listen(sam) # uncomment to listen to the sample
+plot(sam)
+```
+
+## Sequencing and mixing
+
+### Creating a sequence
+
+The `sequence` function repeats a `soundSample` at specific times (given in seconds). It is also possible to specify the volume (standardized between 0 and 1) at which each repetition is played, along with its panoramic (-1 for full left to 1 for full right, 0 is centered). The example below illustrates this. Note that the output of the `sequence` function is a stereo `Wave` object.
+
+```{r,results='markup'}
+A_seq <- sequence(A,time=c(0,0.2,0.4,0.8),
+                  volume=c(1,0.4,0.4,0.4),
+                  pan=c(0,-0.5,0.5,1))
+plot(A_seq)
+```
+
+The code below creates a second sequence using the sample read from the BBC website, and illustrate the effect of the option `letRing`.
+
+```{r,results='hold'}
+sam_seq <- sequence(sam,time=c(0,0.5),pan=c(-1,1),letRing=FALSE)
+plot(sam_seq)
+sam_seq <- sequence(sam,time=c(0,0.5),pan=c(-1,1),letRing=TRUE)
+plot(sam_seq)
+```
+
+### Mixing sequences
+
+The `mix` function takes several `Wave` objects as inputs (e.g. sequences resulting from calls to the `sequence` function) and merges them into a single `Wave` object. It allows controlling the volume and the panoramic of each sequence.
+
+```{r,results='markup'}
+myMix <- mix(list(A_seq,sam_seq),volume=c(0.5,0.75))
+# play(myMix)# uncomment to play
+# writeWave(myMix,'myMix.wav')# uncomment to save to disk
+plot(myMix)
+```
+
+# Application to data sonification: the Wagga Wagga Groove
+
+## General principles 
+
+Data [sonification](https://en.wikipedia.org/wiki/Sonification) refers to the transformation of data into sound, using some algorithmic process. This can be achieved in [many ways](https://sonification.de/handbook/), but here we focus on the approach known as [*parameter mapping*](https://sonification.de/handbook/chapters/chapter15/): the values taken by the data are mapped into some attributes (or parameters) of notes, typically their pitch or loudness, or possibly their duration. This is very much the same process as the mapping performed in data visualization, where data values are mapped into e.g. the color, size of type of symbols in a graph or map.
+
+One possible sonification process is to use data to control the sequencing of a sound sample. Consider, as an example, the Wagga Wagga dataset which comes with this package. It contains the annual precipitation and temperature time series in the city of Wagga Wagga, New South Wales, Australia, as plotted below. A possible sonification of this dataset is to use the data to control the elements of a drum. For instance, a low kick might be played whenever the precipitation is low, and a snare whenever it is high; in addition the temperature might be used to control the master volume. The use of `sequenceR` to achieve this is described next.
+
+```{r}
+par(mfrow=c(2,1))
+plot(WaggaWagga$Year,WaggaWagga$Precipitation,type='l',xlab='Year',ylab='precip. [mm]')
+plot(WaggaWagga$Year,WaggaWagga$Temperature,type='l',xlab='Year',ylab='temp. [C]')
+```
+
+## Sonification of the Wagga Wagga dataset 
+
+We start by defining a few properties of this sonification attempt: its duration, the times at which sound samples will be played and the master volume, controlled by the temperature time series.
+
+```{r}
+n <- NROW(WaggaWagga) # series size
+dur <- 9 # duration in seconds
+tim <- dur*seq(0,1,length.out=n) # regular time vector between 0 and dur
+master <- rescale(WaggaWagga$Temperature,0.2,1) # master volume = temperature time series rescaled between 0.2 and 1
+```
+
+We are going to use three basic elements of a drum: a hi-hat, a bass drum and a snare. The corresponding `soundSample` objects `hiHat`, `kick` and `snare` come along with this package so that we can directly proceed to the sequencing. 
+
+We start by defining a hi-hat rythmic pattern by playing groups of four notes, the first one being accentuated. This is a typical pattern (very much similar to 
+[this intro](https://www.youtube.com/watch?v=Q429AOpL_ds)) and it allows installing the ryhtmic pulse.
+
+```{r}
+every4=(((1:n)-1))%%4==0 # T F F F T F F F etc.
+accents <- rescale(as.numeric(every4),0.2,1) # 1 0.2 0.2 0.2 1 0.2 0.2 0.2 etc.  
+hh <- sequence(hiHat,time=tim,volume=master*accents) # create hi-hat sequence
+# play(hh) # uncomment to play
+```
+
+We then define the low kick sequence by playing it every time precipitation is lower than some threshold. 
+
+```{r}
+mask=WaggaWagga$Precipitation<450 # time steps with low pp
+k <- sequence(kick,time=tim[mask],volume=master[mask]) # play a kick at those time steps
+# play(k) # uncomment to play
+```
+
+We proceed in a similar way to associate the snare with high precipitation values.
+
+```{r}
+mask=WaggaWagga$Precipitation>800 # time steps with high pp
+s <- sequence(snare,time=tim[mask],volume=master[mask]) # play a snare at those time steps
+# play(s) # uncomment to play
+```
+
+The final step is to mix the hi-hat, kick and snare sequences together and to save the result to a file.
+
+```{r}
+final <- mix(list(hh,k,s),volume=c(0.5,0.75,1))
+writeWave(final,'WaggaWagga.wav') # write to disc
+# play(final) # uncomment to play
+```
+
+Data sonification is particularly interesting when it is combined with data animation, as shown in the example below based on the package [gganimate](https://gganimate.com/index.html).
+
+```{r,results='markup'}
+library(tidyr);library(ggplot2);library(gganimate)
+# Modify the shape of the WaggaWagga dataset to facilitate plotting
+DF <- pivot_longer(WaggaWagga,-Year) # function from tidyr
+# Plot precipitation and temperature time series using ggplot
+g <- ggplot(DF,aes(x=Year,y=value))
+g <- g + geom_line(aes(color=name),size=1)+geom_point(size=4)
+g <- g + scale_color_manual(values = c('blue','red'),guide=FALSE)
+g <- g + facet_wrap(vars(name),ncol=1,scales='free_y')+theme_bw()
+g <- g + geom_hline(data=data.frame(y=450,name='Precipitation'),aes(yintercept=y))
+g <- g + geom_hline(data=data.frame(y=800,name='Precipitation'),aes(yintercept=y))
+# Make it look nicer
+g <- g+theme_bw()+theme(axis.title=element_text(size=18), 
+          axis.text=element_text(size=14),
+          strip.text=element_text(size=18))
+# Create an animated plot
+g <- g + transition_reveal(Year)
+# 'Render' the animated plot into a .mp4 movie
+fps=n/dur # number of frames divided by duration
+animate(g,nframes=NROW(WaggaWagga),fps=fps,width=1280,height=720,
+        renderer = av_renderer('WaggaWaggaGroove.mp4',audio='WaggaWagga.wav'))
+```
+

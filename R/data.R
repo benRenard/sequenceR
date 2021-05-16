@@ -1,0 +1,54 @@
+#' Hi-hat sample
+#'
+#' A hi-hat sound sample object
+#'
+"hiHat"
+
+#' Open Hi-hat sample
+#'
+#' An open hi-hat sound sample object
+#'
+"hiHat_o"
+
+#' Hi-hat sample 2
+#'
+#' A hi-hat sound sample object
+#'
+#' @source \url{http://www.archive.org/details/OpenPathMusic44V1}
+"hiHat2"
+
+#' Snare sample
+#'
+#' A snare sound sample object
+#'
+"snare"
+
+
+#' Snare sample 2
+#'
+#' A snare sound sample object
+#'
+#' @source \url{http://www.archive.org/details/OpenPathMusic44V1}
+"snare2"
+
+#' Kick sample
+#'
+#' A kick sound sample object
+#'
+"kick"
+
+#' Kick sample2
+#'
+#' A kick sound sample object
+#'
+#' @source \url{http://www.archive.org/details/OpenPathMusic44V1}
+"kick2"
+
+#' Wagga-Wagga dataset
+#'
+#' Times series of monthly temperatures and precipitations
+#'  recorded at Wagga-Wagga, New South Wales, Australia, 1940-2018
+#'
+#' @source \url{http://www.bom.gov.au/cgi-bin/climate/hqsites/site_data.cgi?period=annual&variable=meanT&station=072150}
+#' @source \url{http://www.bom.gov.au/cgi-bin/climate/hqsites/site_data.cgi?period=annual&variable=rain&station=072150}
+"WaggaWagga"
