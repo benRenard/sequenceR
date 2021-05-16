@@ -1,20 +1,15 @@
 ---
 title: "The sequenceR package"
 subtitle: "Getting started"
-author: "Ben Renard"
-date: "15/04/2020"
 output: 
-  html_document: 
-    number_sections: yes
+  github_document: 
     toc: yes
-vignette: >
-  %\VignetteIndexEntry{Getting started}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo=TRUE,results='hide')
+knitr::opts_chunk$set(echo=TRUE,results='hide',
+                      fig.path = "man/figures/README-")
 ```
 
 # Introduction
@@ -103,7 +98,7 @@ A `soundSample` object can also be created by reading an existing audio file (ty
 # unlink(tfile)
 
 
-w <- tuneR::readWave('cymbal-hihat-stick.wav')
+w <- tuneR::readWave('vignettes/cymbal-hihat-stick.wav')
 #plot Wave
 plot(w)
 ```

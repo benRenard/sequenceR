@@ -6,10 +6,11 @@ Authors@R: person("Benjamin", "Renard", email = "benjamin.renard@inrae.fr",
     role = c("aut", "cre"))
 Description: This package provides a R sequencer to mix audio samples.
     It also defines miscellaneous related objects and methods.
-License: GPL-3
+License: GPL-3 + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Depends:
+    R (>= 3.5.0),
     tuneR
 RoxygenNote: 7.1.0
 Suggests: 
