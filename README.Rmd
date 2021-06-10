@@ -12,6 +12,8 @@ knitr::opts_chunk$set(echo=TRUE,results='hide',
                       fig.path = "man/figures/README-")
 ```
 
+[![DOI](https://zenodo.org/badge/367933400.svg)](https://zenodo.org/badge/latestdoi/367933400)
+
 # Introduction
 
 A [sequencer](https://en.wikipedia.org/wiki/Music_sequencer) is a device or software for creating musical pieces by editing and combining sound samples. The aim of this package is to provide a minimalistic R-based implementation of the most basic actions typically performed by a sequencer, in particular:

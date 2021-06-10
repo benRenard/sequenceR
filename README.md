@@ -1,6 +1,8 @@
 The sequenceR package
 ================
 
+[![DOI](https://zenodo.org/badge/367933400.svg)](https://zenodo.org/badge/latestdoi/367933400)
+
 # Introduction
 
 A [sequencer](https://en.wikipedia.org/wiki/Music_sequencer) is a device
@@ -111,7 +113,7 @@ plot(sun)
 A `soundSample` object can also be created by reading an existing audio
 file (typically a .wav or .mp3). Functions such as `readWave` and
 `readMP3` are provided by the `tuneR` package for this purpose. The
-example below shows how to read a ‘ding-dong’ .wav file downloaded from
+example below shows how to read a ‘ding-dong’ mp3 file, downloaded from
 the [BBC website](https://sound-effects.bbcrewind.co.uk/search). You can
 find more sources of audio sound samples on this
 [website](http://wiki.laptop.org/go/Free_sound_samples).
