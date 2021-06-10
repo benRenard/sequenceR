@@ -111,25 +111,13 @@ plot(sun)
 A `soundSample` object can also be created by reading an existing audio
 file (typically a .wav or .mp3). Functions such as `readWave` and
 `readMP3` are provided by the `tuneR` package for this purpose. The
-example below shows how to read a .wav file from the [BBC
-website](http://bbcsfx.acropolis.org.uk/). You can find more sources of
-audio sound samples on this
+example below shows how to read a ‘ding-dong’ .wav file downloaded from
+the [BBC website](https://sound-effects.bbcrewind.co.uk/search). You can
+find more sources of audio sound samples on this
 [website](http://wiki.laptop.org/go/Free_sound_samples).
 
 ``` r
-# Commented out - link does not work - find another source of wav file.
-# # create a temporary file in working directory
-# tfile <- tempfile(tmpdir=getwd())
-# # download a sound sample from the BBC (549 KB)
-# URL <- 'http://bbcsfx.acropolis.org.uk/assets/07042155.wav'
-# download.file(url=URL,destfile=tfile)
-# # read it using tuneR -  this creates a Wave object from tuneR
-# w <- tuneR::readWave(tfile,from=0.35,to=1,units='second')
-# # delete temporary file
-# unlink(tfile)
-
-
-w <- tuneR::readWave('vignettes/cymbal-hihat-stick.wav')
+w <- tuneR::readMP3('vignettes/07027201.mp3')
 #plot Wave
 plot(w)
 ```
@@ -165,7 +153,7 @@ example below illustrates this. Note that the output of the `sequence`
 function is a stereo `Wave` object.
 
 ``` r
-A_seq <- sequence(A,time=c(0,0.2,0.4,0.8),
+A_seq <- sequence(A,time=c(0,0.5,1,1.5),
                   volume=c(1,0.4,0.4,0.4),
                   pan=c(0,-0.5,0.5,1))
 plot(A_seq)
@@ -177,13 +165,18 @@ The code below creates a second sequence using the sample read from the
 BBC website, and illustrate the effect of the option `letRing`.
 
 ``` r
-sam_seq <- sequence(sam,time=c(0,0.5),pan=c(-1,1),letRing=FALSE)
-plot(sam_seq)
-sam_seq <- sequence(sam,time=c(0,0.5),pan=c(-1,1),letRing=TRUE)
+sam_seq <- sequence(sam,time=c(0,1.2),pan=c(-1,1),letRing=FALSE)
 plot(sam_seq)
 ```
 
 ![](man/figures/README-unnamed-chunk-9-1.png)<!-- -->
+
+``` r
+sam_seq <- sequence(sam,time=c(0,1.2),pan=c(-1,1),letRing=TRUE)
+plot(sam_seq)
+```
+
+![](man/figures/README-unnamed-chunk-9-2.png)<!-- -->
 
 ### Mixing sequences
 
@@ -193,7 +186,7 @@ merges them into a single `Wave` object. It allows controlling the
 volume and the panoramic of each sequence.
 
 ``` r
-myMix <- mix(list(A_seq,sam_seq),volume=c(0.5,0.75))
+myMix <- mix(list(A_seq,sam_seq),volume=c(1,0.3))
 # play(myMix)# uncomment to play
 # writeWave(myMix,'myMix.wav')# uncomment to save to disk
 plot(myMix)

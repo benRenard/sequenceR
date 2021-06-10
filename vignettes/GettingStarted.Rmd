@@ -88,22 +88,10 @@ plot(sun)
 
 ### Reading a sound sample from an audio file
 
-A `soundSample` object can also be created by reading an existing audio file (typically a .wav or .mp3). Functions such as `readWave` and `readMP3` are provided by the `tuneR` package for this purpose. The example below shows how to read a .wav file from the [BBC website](http://bbcsfx.acropolis.org.uk/). You can find more sources of audio sound samples on this [website](http://wiki.laptop.org/go/Free_sound_samples).
+A `soundSample` object can also be created by reading an existing audio file (typically a .wav or .mp3). Functions such as `readWave` and `readMP3` are provided by the `tuneR` package for this purpose. The example below shows how to read a 'ding-dong' mp3 file, downloaded from the [BBC website](https://sound-effects.bbcrewind.co.uk/search). You can find more sources of audio sound samples on this [website](http://wiki.laptop.org/go/Free_sound_samples).
 
 ```{r,results='hold'}
-# Commented out - link does not work - find another source of wav file.
-# # create a temporary file in working directory
-# tfile <- tempfile(tmpdir=getwd())
-# # download a sound sample from the BBC (549 KB)
-# URL <- 'http://bbcsfx.acropolis.org.uk/assets/07042155.wav'
-# download.file(url=URL,destfile=tfile)
-# # read it using tuneR -  this creates a Wave object from tuneR
-# w <- tuneR::readWave(tfile,from=0.35,to=1,units='second')
-# # delete temporary file
-# unlink(tfile)
-
-
-w <- tuneR::readWave('cymbal-hihat-stick.wav')
+w <- tuneR::readMP3('07027201.mp3')
 #plot Wave
 plot(w)
 ```
@@ -124,7 +112,7 @@ plot(sam)
 The `sequence` function repeats a `soundSample` at specific times (given in seconds). It is also possible to specify the volume (standardized between 0 and 1) at which each repetition is played, along with its panoramic (-1 for full left to 1 for full right, 0 is centered). The example below illustrates this. Note that the output of the `sequence` function is a stereo `Wave` object.
 
 ```{r,results='markup'}
-A_seq <- sequence(A,time=c(0,0.2,0.4,0.8),
+A_seq <- sequence(A,time=c(0,0.5,1,1.5),
                   volume=c(1,0.4,0.4,0.4),
                   pan=c(0,-0.5,0.5,1))
 plot(A_seq)
@@ -133,9 +121,9 @@ plot(A_seq)
 The code below creates a second sequence using the sample read from the BBC website, and illustrate the effect of the option `letRing`.
 
 ```{r,results='hold'}
-sam_seq <- sequence(sam,time=c(0,0.5),pan=c(-1,1),letRing=FALSE)
+sam_seq <- sequence(sam,time=c(0,1.2),pan=c(-1,1),letRing=FALSE)
 plot(sam_seq)
-sam_seq <- sequence(sam,time=c(0,0.5),pan=c(-1,1),letRing=TRUE)
+sam_seq <- sequence(sam,time=c(0,1.2),pan=c(-1,1),letRing=TRUE)
 plot(sam_seq)
 ```
 
@@ -144,7 +132,7 @@ plot(sam_seq)
 The `mix` function takes several `Wave` objects as inputs (e.g. sequences resulting from calls to the `sequence` function) and merges them into a single `Wave` object. It allows controlling the volume and the panoramic of each sequence.
 
 ```{r,results='markup'}
-myMix <- mix(list(A_seq,sam_seq),volume=c(0.5,0.75))
+myMix <- mix(list(A_seq,sam_seq),volume=c(1,0.3))
 # play(myMix)# uncomment to play
 # writeWave(myMix,'myMix.wav')# uncomment to save to disk
 plot(myMix)
@@ -235,4 +223,3 @@ fps=n/dur # number of frames divided by duration
 animate(g,nframes=NROW(WaggaWagga),fps=fps,width=1280,height=720,
         renderer = av_renderer('WaggaWaggaGroove.mp4',audio='WaggaWagga.wav'))
 ```
-

@@ -23,7 +23,6 @@
 # produced vignettes
 vignettes/*.html
 vignettes/*.pdf
-vignettes/*.wav
 vignettes/*.mp4
 
 # OAuth2 token, see https://github.com/hadley/httr/releases/tag/v0.3
