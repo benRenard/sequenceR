@@ -106,3 +106,15 @@ rescale<-function(x,low=0,high=1){
   return(out)
 }
 
+#***************************************************************************----
+# Miscellaneous private utilities ----
+
+#' getTime function
+#' Compute the time vector starting from 0 associated with a duration and a sampling rate
+#' @param duration Numeric
+#' @param rate Numeric
+#' @return a numeric vector
+getTime <- function(duration=1,rate=44100){
+  return(seq(0,duration,1/rate))
+}
+
