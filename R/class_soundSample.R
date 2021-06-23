@@ -21,7 +21,7 @@ soundSample<-function(wave,rate=44100){
 }
 
 #***************************************************************************----
-# plot ----
+# Sound Sample Utilities ----
 #
 #' Plot a sound sample
 #'
@@ -43,9 +43,6 @@ plot.soundSample <- function(x,...){
   tuneR::plot(wave,...)
 }
 
-#***************************************************************************----
-# listen ----
-#
 #' Listen to a sound sample
 #'
 #' Listen to a sound sample. Based on tuneR function 'play'
@@ -65,9 +62,22 @@ listen <- function(x){
   tuneR::play(wave)
 }
 
-#***************************************************************************----
-# sequence ----
-#
+#' Get sampling time
+#'
+#' Get the times steps associated with a sound sample.
+#'
+#' @param x sound sample object.
+#' @return a numeric vector containing the sampling times in second.
+#' @examples
+#' # Define sound sample
+#' sam <- soundSample(sin(2*pi*seq(0,1,,44100)*440)+0.1*rnorm(44100)) # 1-second noisy A
+#' # Compute sampling times
+#' timeSteps=getTime(sam)
+#' @export
+getTime <- function(x){
+  return(seq(0,x$duration,length.out=x$n))
+}
+
 #' Sequence a sound sample
 #'
 #' Take a sound sample and repeat it following given timeline,
@@ -155,6 +165,41 @@ sequence <- function(sample,time,letRing=TRUE,
                       samp.rate=sample$rate,bit=16)
   wave <- tuneR::normalize(wave, unit = "16")
   return(wave)
+}
+
+#' Apply an envelope
+#'
+#' Apply a volume envelope to a sound sample.
+#'
+#' @param sample Sound sample object.
+#' @param env Envelope object. Envelope values should all be between 0 and 1.
+#' @return A sound sample object.
+#' @examples
+#' # Define the sound sample
+#' sam <- soundSample(sin(2*pi*seq(0,0.5,1/44100)*220)) # 0.5-second A (220 Hz)
+#' # Define the envelope
+#' env <- envelope(t=c(0,0.03,1),v=c(0,1,0))
+#' # Apply it
+#' res <- applyEnvelope(sam,env)
+#' # Compare waveforms
+#' par(mfrow=c(1,2))
+#' plot(sam,main='before');plot(res,main='after')
+#' # Uncomment to listen to the result
+#' # listen(res)
+#' @export
+applyEnvelope <- function(sample,env){
+  # Check envelop values are between 0 and 1
+  if( max(env$v)>1 | min(env$v)<0){
+    mess=paste0("Invalid volume envelope: should be normalized between 0 and 1")
+    stop(mess,call.=FALSE)
+  }
+  # Get time steps of input sound sample
+  tim=getTime(sample)
+  # regrid envelope on those time steps
+  v=stats::approx(x=env$t*sample$duration,y=env$v,xout=tim)$y
+  # modify sample
+  out=sample;out$wave=out$wave*v
+  return(out)
 }
 
 #***************************************************************************----

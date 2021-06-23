@@ -12,7 +12,7 @@
 #' # listen(sam) # uncomment to listen
 #' @export
 oscillator_sine <- function(freq=440,duration=1,phase=0,rate=44100){
-  time=getTime(duration,rate)
+  time=timeVector(duration,rate)
   wave=sin(phase+2*pi*time*freq)
   return(soundSample(wave,rate))
 }
@@ -69,7 +69,7 @@ oscillator_triangle <- function(freq=440,duration=1,phase=0,rate=44100){
 #' # listen(sam) # uncomment to listen
 #' @export
 oscillator_saw <- function(freq=440,duration=1,phase=0,rate=44100){
-  time=getTime(duration,rate)
+  time=timeVector(duration,rate)
   wave=(-2/pi)*atan(1/tan(phase+pi*(time-floor(time))*freq))
   return(soundSample(wave,rate))
 }
@@ -114,7 +114,7 @@ oscillator <- function(type='sine',freq=440,duration=1,phase=0,rate=44100){
 oscillator_pattern <- function(pattern,freq=440,duration=1,rate=44100){
   time=seq(0,1/freq,1/rate) # time vector for a single pattern
   # regrid pattern on time vector
-  regrid=approx(x=seq(0,time[length(time)],length.out=length(pattern)),
+  regrid=stats::approx(x=seq(0,time[length(time)],length.out=length(pattern)),
              y=pattern,xout=time)
   pat=rescale(regrid$y,-1,1)
   wave=rep_len(pat,floor(duration*rate))
