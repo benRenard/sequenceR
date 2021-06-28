@@ -10,6 +10,18 @@
 #'
 "hiHat_o"
 
+#' Ride sample
+#'
+#' A ride cymbal sound sample object
+#'
+"ride"
+
+#' Bell sample
+#'
+#' A ride cymbal (hit ion the bell) sound sample object
+#'
+"bell"
+
 #' Hi-hat sample 2
 #'
 #' A hi-hat sound sample object

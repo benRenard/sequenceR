@@ -34,3 +34,13 @@ f=file.path('data-raw','wav','drum-bass-lo-1.wav')
 w=readWave(f)
 kick2=soundSample(wave=w@left,rate=w@samp.rate)
 save(kick2,file=file.path('data','kick2.RData'),compress='xz')
+# ride
+f=file.path('data-raw','wav','ride.wav')
+w=readWave(f)
+ride=soundSample(wave=w@left,rate=w@samp.rate)
+save(ride,file=file.path('data','ride.RData'),compress='xz')
+# bell
+f=file.path('data-raw','wav','bell.wav')
+w=readWave(f)
+bell=soundSample(wave=w@left,rate=w@samp.rate)
+save(bell,file=file.path('data','bell.RData'),compress='xz')
