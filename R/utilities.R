@@ -118,3 +118,88 @@ timeVector <- function(duration=1,rate=44100){
   return(seq(0,duration,1/rate))
 }
 
+#' Check sequencer arguments
+#' Check that the arguments used in sequencing functions (e.g. time, volume, pan, etc.) are valid.
+#' @param argList list, a named list containg the arguments
+#' @return nothing - just stops execution with an error message if something is invalid
+checkSeqArgs <- function(argList){
+  if(!is.null(argList$time)){
+    z=argList$time
+    if( !is.numeric(z) | min(z)<0 | any(diff(z)<0)){
+      mess=paste0("Invalid time: should be non-decreasing and non-negative")
+      stop(mess,call.=FALSE)
+    }
+  }
+  if(!is.null(argList$volume)){
+    z=argList$volume
+    if( !is.numeric(z) | max(z)>1 | min(z)<0){
+      mess=paste0("Invalid volume: should be normalized between 0 and 1")
+      stop(mess,call.=FALSE)
+    }
+  }
+  if(!is.null(argList$pan)){
+    z=argList$pan
+    if( !is.numeric(z) | max(z) > 1 | min(z) < -1){
+      mess=paste0("Invalid pan: should be normalized between -1 and 1")
+      stop(mess,call.=FALSE)
+    }
+  }
+  if(!is.null(argList$fadein)){
+    z=argList$fadein
+    if( !is.numeric(z) | min(z) < 0){
+      mess=paste0("Invalid fadein: should be non-negative")
+      stop(mess,call.=FALSE)
+    }
+  }
+  if(!is.null(argList$fadeout)){
+    z=argList$fadeout
+    if( !is.numeric(z) | min(z) < 0){
+      mess=paste0("Invalid fadeout: should be non-negative")
+      stop(mess,call.=FALSE)
+    }
+  }
+  if(!is.null(argList$notes)){
+    z=argList$notes
+    if( !is.integer(z) & !is.character(z)){
+      mess=paste0("Invalid notes: should be either an integer or a character vector")
+      stop(mess,call.=FALSE)
+    }
+    if( is.integer(z) & min(z)<0){
+      mess=paste0("Invalid notes: negative integers not allowed")
+      stop(mess,call.=FALSE)
+    }
+  }
+  if(!is.null(argList$env)){
+    z=argList$env
+    if( any(sapply(z,class)!='envelope') ){
+      mess=paste0("Invalid env: should be a vector of objects of class 'envelope'")
+      stop(mess,call.=FALSE)
+    }
+  }
+  # Check all arguments have same length
+  ll=rep(NA,length(argList))
+  for(i in 1:length(ll)){
+    if(!is.null(argList[[i]])){ll[i]=length(argList[[i]])}
+  }
+  if(diff(range(ll,na.rm=TRUE))>0){
+    mess=paste0("Some argument(s) in (",paste0(names(argList),collapse=','),") are invalid: they should all have the same length")
+    stop(mess,call.=FALSE)
+  }
+}
+
+#' Check wave size
+#' Check that the size of a wave does not exceed the maximum allowed size.
+#' @param n integer, size to be checked
+#' @param nmax integer, maximum allowed size
+#' @return nothing - just stops execution with an error message if n>nmax
+checkMaxSize <- function(n,nmax){
+  if(n>nmax){
+    mess=paste0("Max size exceeded: ",
+                "length of sequenced wave ",
+                "[n=",n,"; approx. size:",round(2*n*8/2^20)," Mb] ",
+                "exceeds nmax [",nmax,"]. ",
+                "Either increase nmax or decrease sampling rate.")
+    stop(mess,call.=FALSE)
+  }
+}
+

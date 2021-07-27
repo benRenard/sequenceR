@@ -114,35 +114,14 @@ getTime <- function(x){
 sequence <- function(sample,time,letRing=TRUE,
                      volume=rep(1,NROW(time)),pan=rep(0,NROW(time)),
                      nmax=10*10^6){
-  if( max(volume)>1 | min(volume)<0){
-    mess=paste0("Invalid volume: should be normalized between 0 and 1")
-    stop(mess,call.=FALSE)
-  }
-  if( NROW(volume) != NROW(time) ){
-    mess=paste0("Invalid volume: should have same size as time ")
-    stop(mess,call.=FALSE)
-  }
-  if( max(pan) > 1 | min(pan) < -1){
-    mess=paste0("Invalid pan: should be normalized between -1 and 1")
-    stop(mess,call.=FALSE)
-  }
-  if( NROW(pan) != NROW(time) ){
-    mess=paste0("Invalid pan: should have same size as time ")
-    stop(mess,call.=FALSE)
-  }
+  # Check input arguments are valid
+  checkSeqArgs(list(volume=volume,time=time,pan=pan))
   # total duration of the sequence (max time + length of one sample)
   duration <- max(time) + sample$duration
   # size of the sequence
   n <- 1+round(duration*sample$rate)
   # Check size of resulting wave
-  if(n>nmax){
-    mess=paste0("Max size exceeded: ",
-                "size of sequenced wave ",
-                "[n=",n,"; approx. size:",round(2*n*8/2^20)," Mb] ",
-                "exceeds nmax [",nmax,"]. ",
-                "Either increase nmax or decrease sampling rate.")
-    stop(mess,call.=FALSE)
-  }
+  checkMaxSize(n,nmax)
   # initialize
   p <- NROW(sample$wave)
   left <- numeric(n)
