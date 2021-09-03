@@ -181,6 +181,28 @@ applyEnvelope <- function(sample,env){
   return(out)
 }
 
+#' Pitch shifter
+#'
+#' Shift the pitch of a sound sample by n semitones. Note that the duration of the
+#' resulting sample is not the same as that of the original.
+#'
+#' @param sample Sound sample object.
+#' @param n numeric, number of semitones.
+#' @return A sound sample object.
+#' @examples
+#' # Define a A sound sample and get a D by adding 5 semitones
+#' A <- soundSample(sin(2*pi*seq(0,0.5,1/44100)*220)) # 0.5-second A (220 Hz)
+#' D <- shiftPitch(A,5)
+#' @export
+shiftPitch <- function(sample,n){
+  k=(2^(n/12))
+  t.in=seq(from=0,by=1/sample$rate,length.out=sample$n)
+  t.out=seq(from=0,to=sample$duration,by=k/sample$rate)
+  foo=approx(x=t.in,y=sample$wave,xout=t.out)
+  out=soundSample(foo$y[!is.na(foo$y)])
+  return(out)
+}
+
 #***************************************************************************----
 # internal constructor ----
 new_soundSample<-function(wave,rate){
