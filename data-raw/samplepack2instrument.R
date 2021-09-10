@@ -69,5 +69,45 @@ files=c('_bd6.','_snare-mid.','_snare-low.','_snare-hi.',
 drumkitStahl=buildInstrument(packDir,files,names)
 save(drumkitStahl,file=file.path('instruments','drumkitStahl.RData'),compress='xz')
 
-# inst=drumkitStahl
-# play(play.instrument(inst,fadein=rep(0,length(inst))))
+# Hang drum
+packDir=file.path('data-raw','samplePacks','hangDrum')
+sam=vector(mode='list',length=25)
+names=c(paste0(chromatic,'3'),paste0(chromatic,'4'),'C5')
+foo=tuneR::readMP3(file.path(packDir,'380504__jimthecab__hang-drum-1.mp3'))
+sam[[1]]=soundSample(wave=foo@left+foo@right,rate=foo@samp.rate) # C3
+sam[[2]]=shiftPitch(sam[[1]],1) # Db3
+sam[[3]]=shiftPitch(sam[[1]],2) # D3
+sam[[4]]=shiftPitch(sam[[1]],3) # Eb3
+sam[[5]]=shiftPitch(sam[[1]],4) # E3
+foo=tuneR::readMP3(file.path(packDir,'380502__jimthecab__hang-drum-3.mp3'))
+sam[[6]]=soundSample(wave=foo@left+foo@right,rate=foo@samp.rate) # F3
+sam[[7]]=shiftPitch(sam[[6]],1) # Gb3
+foo=tuneR::readMP3(file.path(packDir,'380501__jimthecab__hang-drum-4.mp3'))
+sam[[8]]=soundSample(wave=foo@left+foo@right,rate=foo@samp.rate) # G3
+foo=tuneR::readMP3(file.path(packDir,'380508__jimthecab__hang-drum-5.mp3'))
+sam[[9]]=soundSample(wave=foo@left+foo@right,rate=foo@samp.rate) # Ab3
+sam[[10]]=shiftPitch(sam[[9]],1) # A3
+sam[[11]]=shiftPitch(sam[[9]],2) # Bb3
+sam[[12]]=shiftPitch(sam[[9]],3) # B3
+foo=tuneR::readMP3(file.path(packDir,'380507__jimthecab__hang-drum-6.mp3'))
+sam[[13]]=soundSample(wave=foo@left+foo@right,rate=foo@samp.rate) # C4
+foo=tuneR::readMP3(file.path(packDir,'380506__jimthecab__hang-drum-7.mp3'))
+sam[[14]]=soundSample(wave=foo@left+foo@right,rate=foo@samp.rate) # Db4
+sam[[15]]=shiftPitch(sam[[14]],1) # D4
+sam[[16]]=shiftPitch(sam[[14]],2) # Eb4
+sam[[17]]=shiftPitch(sam[[14]],3) # E4
+foo=tuneR::readMP3(file.path(packDir,'380505__jimthecab__hang-drum-8.mp3'))
+sam[[18]]=soundSample(wave=foo@left+foo@right,rate=foo@samp.rate) # F4
+sam[[19]]=shiftPitch(sam[[18]],1) # Gb4
+foo=tuneR::readMP3(file.path(packDir,'380509__jimthecab__hang-drum-9.mp3'))
+sam[[20]]=soundSample(wave=foo@left+foo@right,rate=foo@samp.rate) # G4
+sam[[21]]=shiftPitch(sam[[20]],1) # Ab4
+sam[[22]]=shiftPitch(sam[[20]],2) # A4
+sam[[23]]=shiftPitch(sam[[20]],3) # Bb4
+sam[[24]]=shiftPitch(sam[[20]],4) # B4
+sam[[25]]=shiftPitch(sam[[20]],5) # C5
+hangDrum=instrument(sam,names[1:length(sam)])
+save(hangDrum,file=file.path('instruments','hangDrum.RData'),compress='xz')
+
+# inst=hangDrum
+# play(play.instrument(inst,time=0.5*(1:length(inst)),fadein=rep(0,length(inst))))
