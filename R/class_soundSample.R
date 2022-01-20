@@ -23,6 +23,44 @@ soundSample<-function(wave,rate=44100){
 #***************************************************************************----
 # Sound Sample Utilities ----
 #
+#' Cast to a sound sample
+#'
+#' Convert a tuneR::Wave object into a soundSample.
+#'
+#' @param w tuneR Wave object
+#' @param pan Numeric in [-1;1], panoramic. -1 (resp. 1) only select the left
+#'     (resp. right) channel of w (if the latter is stereo). 0 averages both channels
+#' @return An object of class 'soundSample'.
+#' @examples
+#' w <- tuneR::Wave(left=sin(2*pi*seq(0,1,,44100)*440)) # 1-second A
+#' sam <- as.soundSample(w)
+#' plot(sam)
+#' @export
+as.soundSample <- function(w,pan=0){
+  v=pan2vol(pan);wave=0
+  if(length(w@left)>0){wave=wave+v$left*w@left}
+  if(length(w@right)>0){wave=wave+v$right*w@right}
+  sam <- soundSample(wave=wave,rate=w@samp.rate)
+  return(sam)
+}
+
+#' Cast to a tuneR::Wave object
+#'
+#' Convert a soundSample into a tuneR::Wave object.
+#'
+#' @param x sound sample object.
+#' @return a tuneR Wave object.
+#' @examples
+#' sam <- soundSample(sin(2*pi*seq(0,1,,44100)*440)) # 1-second A (440 Hz)
+#' w <- as.Wave(sam)
+#' plot(w)
+#' @export
+as.Wave <- function(x){
+  w <- tuneR::Wave(left = x$wave, right = x$wave, samp.rate = x$rate, bit = 16)
+  w <- tuneR::normalize(w, unit = "16")
+  return(w)
+}
+
 #' Plot a sound sample
 #'
 #' Plot a sound sample. Uses plotly to add zooming capability.
@@ -41,6 +79,60 @@ soundSample<-function(wave,rate=44100){
 plot.soundSample <- function(x,...){
   wave <- tuneR::Wave(left = x$wave,samp.rate = x$rate, bit = 16)
   tuneR::plot(wave,...)
+}
+
+#' Read a sound sample
+#'
+#' Read a sound sample from a .mp3 or .wav file.
+#'
+#' @param file string, file with extension .wav or.mp3
+#' @param ... additional arguments passed to function tuneR::readWave
+#' @return An object of class 'soundSample'.
+#' @examples
+#' sam=try(read.soundSample(file='vignettes/07027201.mp3'))
+#' @importFrom tuneR readWave readMP3
+#' @export
+read.soundSample <- function(file,...){
+  ext=tools::file_ext(file)
+  if(ext %in% c('mp3','MP3')){
+    w=tuneR::readMP3(file)
+  } else if (ext %in% c('wav','WAV')){
+    w=tuneR::readWave(file,...)
+  } else {
+    stop('unknown file extension')
+  }
+  sam=as.soundSample(w)
+  return(sam)
+}
+
+#' Write a sound sample
+#'
+#' Write a sound sample in .wav or .mp3 format.
+#'
+#' @param x sound sample object.
+#' @param file string, destination file. Default file format is .wav.
+#'    If file extension is .mp3, conversion to mp3 is attempted using ffmpeg,
+#'    which hence needs to be available (see https://ffmpeg.org/).
+#' @return nothing - writing function.
+#' @examples
+#' sam <- soundSample(sin(2*pi*seq(0,1,,44100)*440)) # 1-second A (440 Hz)
+#' write.soundSample(sam,'A440.wav')
+#' @export
+write.soundSample <- function(x,file){
+  w=as.Wave(x)
+  ext=tools::file_ext(file)
+  if (ext %in% c('wav','WAV')){
+    tuneR::writeWave(w,file)
+  } else if (ext %in% c('mp3','MP3')){ # try to convert with ffmpeg
+    tuneR::writeWave(w,'temp.wav')
+    cmd=paste('cd',getwd(),'&& ffmpeg -y -i temp.wav',file)
+    out=system(cmd)
+    file.remove('temp.wav' )
+    if(out!=0){stop('Conversion to .mp3 has failed: install ffmpeg or use a .wav format.')}
+  } else {
+    tuneR::writeWave(w,file)
+    warning('Unknown file extension: file has been written but in a WAVE format.')
+  }
 }
 
 #' Listen to a sound sample
@@ -198,7 +290,7 @@ shiftPitch <- function(sample,n){
   k=(2^(n/12))
   t.in=seq(from=0,by=1/sample$rate,length.out=sample$n)
   t.out=seq(from=0,to=sample$duration,by=k/sample$rate)
-  foo=approx(x=t.in,y=sample$wave,xout=t.out)
+  foo=stats::approx(x=t.in,y=sample$wave,xout=t.out)
   out=soundSample(foo$y[!is.na(foo$y)])
   return(out)
 }

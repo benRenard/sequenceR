@@ -113,6 +113,29 @@ play.instrument <-function (inst,notes=1:length(inst),
   return(wave)
 }
 
+#' Write an instrument to file
+#'
+#' Write each sound sample of the instrument as a separate .wav or .mp3 file.
+#'
+#' @param inst Instrument object.
+#' @param dir String, directory where files should be written.
+#' @param fmt String, 'wav' or 'mp3'.
+#' @return nothing - writing function.
+#' @examples
+#' # Create an instrument
+#' drumset <- instrument(samples=list(kick,snare,hiHat),notes=c('boom','tat','cheet'))
+#' # Write to files (one per element)
+#' write.instrument(drumset)
+#' @export
+write.instrument <-function (inst,dir=getwd(),fmt='wav'){
+  if(!(fmt %in% c('wav','WAV','mp3','MP3'))){stop('Unknown format')}
+  noms=names(inst)
+  for(i in 1:length(inst)){
+    fname=file.path(dir,paste0(noms[i],'.',fmt))
+    write.soundSample(inst[[i]],fname)
+  }
+}
+
 #***************************************************************************----
 # internal constructor ----
 new_instrument<-function(samples,notes){
