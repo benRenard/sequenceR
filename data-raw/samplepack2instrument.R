@@ -109,5 +109,21 @@ sam[[25]]=shiftPitch(sam[[20]],5) # C5
 hangDrum=instrument(sam,names[1:length(sam)])
 save(hangDrum,file=file.path('instruments','hangDrum.RData'),compress='xz')
 
-# inst=hangDrum
+# Guitar harmonics
+packDir=file.path('data-raw','samplePacks','philharmonia','Strings','guitar')
+names=c('E3','G3','A3','B3',
+        'C4','D4','Eb4','E4',
+        'F4','Gb4','G4','A4',
+        'B4','C5','D5','E5',
+        'Gb5','G5','B5','E6')
+names2=c('E3_very-long_forte','G3_very-long_piano','A3_very-long_forte','B3_very-long_piano',
+         'C4_very-long_piano','D4_very-long_forte','Ds4_very-long_piano','E4_very-long_forte',
+         'F4_very-long_piano','Fs4_very-long_piano','G4_very-long_forte','A4_very-long_forte',
+         'B4_very-long_forte','C5_very-long_piano','D5_very-long_forte','E5_very-long_forte',
+         'Fs5_very-long_piano','G5_very-long_forte','B5_very-long_forte','E6_very-long_forte')
+files=paste0(names2,'_harmonics.mp3')
+guitarHarmonics=buildInstrument(packDir,files,names,timeBeforePeak=0.01)
+save(guitarHarmonics,file=file.path('instruments','guitarHarmonics.RData'),compress='xz')
+
+# inst=guitarHarmonics
 # play(play.instrument(inst,time=0.5*(1:length(inst)),fadein=rep(0,length(inst))))
