@@ -7,7 +7,13 @@ buildInstrument <- function(packDir,files,names,timeBeforePeak=NA){
     j=which(grepl(files[i],allFiles,fixed=TRUE))
     if(length(j)==0){stop(paste('File',files[i],'not found or matched'))}
     if(length(j)>1){stop(paste('Several matches for file',files[i]))}
-    foo=tuneR::readMP3(file.path(packDir,allFiles[j]))
+    f=allFiles[j]
+    ext=substr(f,nchar(f)-2,nchar(f))
+    if(ext %in% c('mp3','MP3')){
+      foo=tuneR::readMP3(file.path(packDir,f))
+    } else {
+      foo=tuneR::readWave(file.path(packDir,f))
+    }
     if(foo@stereo){
       w=0.5*(foo@left+foo@right)
     } else {
@@ -125,5 +131,28 @@ files=paste0(names2,'_harmonics.mp3')
 guitarHarmonics=buildInstrument(packDir,files,names,timeBeforePeak=0.01)
 save(guitarHarmonics,file=file.path('instruments','guitarHarmonics.RData'),compress='xz')
 
-# inst=guitarHarmonics
-# play(play.instrument(inst,time=0.5*(1:length(inst)),fadein=rep(0,length(inst))))
+# Percussion kit
+packDir=file.path('data-raw','samplePacks','percussions','FWS')
+names=c('conga1_low','conga1_high','conga1_mute','conga2_low','conga2_high',
+        'bongo_low','bongo_high','darbuka_low','darbuka_high','darbuka_mute',
+        'tambourine_low','tambourine_high','claves','timbales_low','timbales_high',
+        'shaker1','shaker2','triangle_closed','triangle_open',
+        'woodblock_low','woodblock_high','agogo_low','agogo_high',
+        'cowbell1','cowbell2','cowbell3','cowbell4',
+        'cuica1_low','cuica1_high','cuica2_low','cuica2_high',
+        'guiro','klank1','klank2',
+        'bamboo','sticks','handdrum','kicksnare','metal','sleighbells')
+files=c('Conga-Low-2','Conga-High-2','Conga-Mute-1','Conga-Low-1','Conga-High-1',
+        'Bongo-Low','Bongo-High','Doumbek-Doum','Doumbek-Tek-1','Doumbek-Tek-2',
+        'Tambourine-2','Tambourine-1','Claves','Timbales-Low','Timbales-High',
+        'Shaker-2','Shaker-1','Triangle-Closed','Triangle-Open',
+        'Woodblock-2','Woodblock-1','Agogo-Low','Agogo-High',
+        'Cowbell-4','Cowbell-1','Cowbell-3','Cowbell-2',
+        'Cuica-Low','Cuica-High','Cuica-2','Cuica-1',
+        'Guiro','Klank-3','Klank-4',
+        'Bamboo','Cross-Sticks','Hand-Drum','Kick-Snare','Metal-Hit','Sleigh-Bells')
+percussionFWS=buildInstrument(packDir,files,names)
+save(percussionFWS,file=file.path('instruments','percussionFWS.RData'),compress='xz')
+
+inst=percussionFWS
+play(play.instrument(inst,time=0.5*(1:length(inst)),fadein=rep(0,length(inst))))
