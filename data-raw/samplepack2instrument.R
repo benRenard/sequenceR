@@ -58,6 +58,9 @@ names=c(paste0(chromatic[5:12],'2'),paste0(chromatic,'3'),paste0(chromatic,'4'))
 names2=c(paste0(chrom2[5:12],'2'),paste0(chrom2,'3'),paste0(chrom2,'4'))
 files=paste0(names2,'_very-long_forte_normal.mp3')
 guitarPhilharmonia=buildInstrument(packDir,files,names,timeBeforePeak=0.01)
+# replace 'buzzing' sound samples
+guitarPhilharmonia[['Gb2']]=shiftPitch(guitarPhilharmonia[['G2']],-1)
+guitarPhilharmonia[['Gb3']]=shiftPitch(guitarPhilharmonia[['F3']],1)
 save(guitarPhilharmonia,file=file.path('instruments','guitarPhilharmonia.RData'),compress='xz')
 
 # Drumkit
