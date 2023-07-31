@@ -12,11 +12,12 @@ LazyData: true
 Depends:
     R (>= 3.5.0),
     tuneR
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.3
 Suggests: 
     knitr,
     rmarkdown,
     ggplot2,
     gganimate,
-    tidyr
+    tidyr,
+    av
 VignetteBuilder: knitr

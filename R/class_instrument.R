@@ -127,7 +127,7 @@ play.instrument <-function (inst,notes=1:length(inst),
 #' # Write to files (one per element)
 #' write.instrument(drumset)
 #' @export
-write.instrument <-function (inst,dir=getwd(),fmt='wav'){
+write.instrument <-function (inst,dir=tempdir(),fmt='wav'){
   if(!(fmt %in% c('wav','WAV','mp3','MP3'))){stop('Unknown format')}
   noms=names(inst)
   for(i in 1:length(inst)){
@@ -160,7 +160,7 @@ new_instrument<-function(samples,notes){
 validate_instrument<-function(inst){
   rate=NA
   for(note in names(inst)){
-    if(class(inst[[note]])!='soundSample'){
+    if(!inherits(inst[[note]],'soundSample')){
       mess=paste0("Invalid samples: they should all be of class soundSample")
       stop(mess,call.=FALSE)
     }
