@@ -2,8 +2,7 @@
 % Please edit documentation in R/utilities.R
 \name{timeVector}
 \alias{timeVector}
-\title{timeVector function
-Compute the time vector starting from 0 associated with a duration and a sampling rate}
+\title{timeVector function}
 \usage{
 timeVector(duration = 1, rate = 44100)
 }
@@ -16,6 +15,5 @@ timeVector(duration = 1, rate = 44100)
 a numeric vector
 }
 \description{
-timeVector function
 Compute the time vector starting from 0 associated with a duration and a sampling rate
 }

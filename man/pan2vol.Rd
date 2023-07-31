@@ -2,9 +2,7 @@
 % Please edit documentation in R/utilities.R
 \name{pan2vol}
 \alias{pan2vol}
-\title{Pan-to-volume function
-Transforms a pan (between -1 for full left and 1 for full right) into right/left
-normalized volumes between 0 and 1}
+\title{Pan-to-volume function}
 \usage{
 pan2vol(pan, channel)
 }
@@ -15,7 +13,6 @@ pan2vol(pan, channel)
 a list of length 2 with fields left and right.
 }
 \description{
-Pan-to-volume function
 Transforms a pan (between -1 for full left and 1 for full right) into right/left
 normalized volumes between 0 and 1
 }

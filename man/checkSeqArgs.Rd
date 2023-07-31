@@ -2,8 +2,7 @@
 % Please edit documentation in R/utilities.R
 \name{checkSeqArgs}
 \alias{checkSeqArgs}
-\title{Check sequencer arguments
-Check that the arguments used in sequencing functions (e.g. time, volume, pan, etc.) are valid.}
+\title{Check sequencer arguments}
 \usage{
 checkSeqArgs(argList)
 }
@@ -14,6 +13,5 @@ checkSeqArgs(argList)
 nothing - just stops execution with an error message if something is invalid
 }
 \description{
-Check sequencer arguments
 Check that the arguments used in sequencing functions (e.g. time, volume, pan, etc.) are valid.
 }

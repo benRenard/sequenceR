@@ -2,8 +2,7 @@
 % Please edit documentation in R/utilities.R
 \name{checkMaxSize}
 \alias{checkMaxSize}
-\title{Check wave size
-Check that the size of a wave does not exceed the maximum allowed size.}
+\title{Check wave size}
 \usage{
 checkMaxSize(n, nmax)
 }
@@ -16,6 +15,5 @@ checkMaxSize(n, nmax)
 nothing - just stops execution with an error message if n>nmax
 }
 \description{
-Check wave size
 Check that the size of a wave does not exceed the maximum allowed size.
 }

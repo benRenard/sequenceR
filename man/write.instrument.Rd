@@ -4,7 +4,7 @@
 \alias{write.instrument}
 \title{Write an instrument to file}
 \usage{
-write.instrument(inst, dir = getwd(), fmt = "wav")
+write.instrument(inst, dir = tempdir(), fmt = "wav")
 }
 \arguments{
 \item{inst}{Instrument object.}

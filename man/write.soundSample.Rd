@@ -21,5 +21,5 @@ Write a sound sample in .wav or .mp3 format.
 }
 \examples{
 sam <- soundSample(sin(2*pi*seq(0,1,,44100)*440)) # 1-second A (440 Hz)
-write.soundSample(sam,'A440.wav')
+write.soundSample(sam,file=tempfile())
 }
