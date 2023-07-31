@@ -78,8 +78,10 @@ mix <- function(waves,volume=rep(1,length(waves)),pan=rep(0,length(waves))){
 # Pan to volume ----
 #
 #' Pan-to-volume function
+#'
 #' Transforms a pan (between -1 for full left and 1 for full right) into right/left
 #' normalized volumes between 0 and 1
+#'
 #' @param pan Numeric between -1 and 1
 #' @return a list of length 2 with fields left and right.
 #' @keywords internal
@@ -89,14 +91,20 @@ pan2vol<-function(pan,channel){
 }
 
 #***************************************************************************----
-# Rescale ----
+# Rescaling and mapping ----
 #
 #' Rescale function
+#'
 #' Rescale a series between two bounds
+#'
 #' @param x Numeric vector
 #' @param low Numeric, lower bound
 #' @param high Numeric, higher bound
 #' @return a rescaled numeric vector
+#' @examples
+#' # example code
+#' rescale(1:10)
+#' rescale(rnorm(10), 100, 101)
 #' @export
 rescale<-function(x,low=0,high=1){
   mini <- min(x,na.rm=T)
@@ -106,10 +114,30 @@ rescale<-function(x,low=0,high=1){
   return(out)
 }
 
+#' Pitch mapping function
+#'
+#' Maps a series of values into pitches of notes
+#'
+#' @param x Numeric vector
+#' @param notes character vector, notes onto which values are map (i.e. the musical scakle).
+#'     Notes should be written in Scientific pitch notation, e.g. c('C4','E4','G4')
+#'     (see \url{https://en.wikipedia.org/wiki/Scientific_pitch_notation})
+#' @return a character vector representing the original values transformed into pitches
+#' @examples
+#' pitchMapping(x=1:10,notes=c('C4','E4','G4'))
+#' pitchMapping(rnorm(20),notes=c('E3','Gb3','G3','A3','B3','C4','D4'))
+#' @export
+pitchMapping <- function(x,notes){
+  # map to integer indices between 1 and length(notes)
+  ix=round(rescale(x,0.5+0.000001,length(notes)+0.5-0.000001))
+  return(notes[ix])
+}
+
 #***************************************************************************----
 # Miscellaneous private utilities ----
 
 #' timeVector function
+#'
 #' Compute the time vector starting from 0 associated with a duration and a sampling rate
 #' @param duration Numeric
 #' @param rate Numeric
@@ -119,6 +147,7 @@ timeVector <- function(duration=1,rate=44100){
 }
 
 #' Check sequencer arguments
+#'
 #' Check that the arguments used in sequencing functions (e.g. time, volume, pan, etc.) are valid.
 #' @param argList list, a named list containg the arguments
 #' @return nothing - just stops execution with an error message if something is invalid
@@ -188,7 +217,9 @@ checkSeqArgs <- function(argList){
 }
 
 #' Check wave size
+#'
 #' Check that the size of a wave does not exceed the maximum allowed size.
+#'
 #' @param n integer, size to be checked
 #' @param nmax integer, maximum allowed size
 #' @return nothing - just stops execution with an error message if n>nmax
