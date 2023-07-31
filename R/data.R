@@ -64,3 +64,12 @@
 #' @source \url{http://www.bom.gov.au/cgi-bin/climate/hqsites/site_data.cgi?period=annual&variable=meanT&station=072150}
 #' @source \url{http://www.bom.gov.au/cgi-bin/climate/hqsites/site_data.cgi?period=annual&variable=rain&station=072150}
 "WaggaWagga"
+
+#' Global Temperature Anomalies dataset
+#'
+#' Times series of annual temperature anomalies at the global scale,
+#' 1850-2021. This time series is the one used to create the Warming Stripes
+#' (\url{https://www.climate-lab-book.ac.uk/2018/warming-stripes/}).
+#'
+#' @source \url{https://www.metoffice.gov.uk/hadobs/hadcrut4/data/current/download.html}
+"globalT"
