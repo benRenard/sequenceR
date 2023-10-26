@@ -134,6 +134,90 @@ pitchMapping <- function(x,notes){
 }
 
 #***************************************************************************----
+# Music utilities ----
+#
+#' Note-frequency table
+#'
+#' Builds a dataframe containing notes (in
+#' \href{https://en.wikipedia.org/wiki/Scientific_pitch_notation}{scientific pitch notation})
+#' and corresponding frequencies.
+#'
+#' @param minOctave integer, smallest (lowest-pitched) octave
+#' @param maxOctave integer, largest (highest-pitched) octave
+#' @return a data frame with 4 columns: note name 1 (written with 'b'),
+#'  note name 2 (written with '#'),index (in semitones with respect to A4)
+#'  and frequency (in Hz)
+#' @examples
+#' # example code
+#' noteFrequencyTable()
+#' @export
+noteFrequencyTable <- function(minOctave=0,maxOctave=8){
+  nlist1=c('C','Db','D','Eb','E','F','Gb','G','Ab','A','Bb','B')
+  nlist2=c('C','C#','D','D#','E','F','F#','G','G#','A','A#','B')
+  mini=ifelse(minOctave<=4,minOctave,4)
+  maxi=ifelse(maxOctave>=4,maxOctave,4)
+  DF=data.frame()
+  for(i in mini:maxi){
+    DF=rbind(DF,data.frame(note1=paste0(nlist1,i),note2=paste0(nlist2,i),octave=i))
+  }
+  DF=cbind(DF,index=(1:NROW(DF))-which(DF$note1=='A4'))
+  DF=cbind(DF,frequency=440*2^(DF$index/12))
+  return(DF[DF$octave>=minOctave & DF$octave<=maxOctave,-3])
+}
+
+#' Notes-to-frequencies function
+#'
+#' Get frequencies from note names (in
+#' \href{https://en.wikipedia.org/wiki/Scientific_pitch_notation}{scientific pitch notation}).
+#'
+#' @param notes Character vector, note names.
+#' @param minOctave integer, smallest (lowest-pitched) octave
+#' @param maxOctave integer, largest (highest-pitched) octave
+#' @return a numeric vector of frequencies (in Hz)
+#' @examples
+#' # example code
+#' getFrequencies(c('A3','A4','A5','C#6','Db6','A9','X0'))
+#' getFrequencies(c('A3','A4','A5','C#6','Db6','A9','X0'),maxOctave=9)
+#' @export
+getFrequencies <- function(notes,minOctave=0,maxOctave=8){
+  out=rep(NA,length(notes))
+  DF=noteFrequencyTable(minOctave,maxOctave)
+  for(i in 1:length(notes)){
+    k=which(DF$note1==notes[i])
+    if(length(k)==0) {k=which(DF$note2==notes[i])}
+    if(length(k)==0) {out[i]=NA} else {out[i]=DF$frequency[k]}
+  }
+  return(out)
+}
+
+#' Frequencies-to-notes function
+#'
+#' Get notes (in
+#' \href{https://en.wikipedia.org/wiki/Scientific_pitch_notation}{scientific pitch notation})
+#' from frequencies. The note with the closest frequency is returned.
+#'
+#' @param frequencies numeric vector, frequencies in Hz
+#' @param minOctave integer, smallest (lowest-pitched) octave
+#' @param maxOctave integer, largest (highest-pitched) octave
+#' @param option character, use 'b' or '#' in note names?
+#' @return a character vector of notes
+#' @examples
+#' # example code
+#' getNotes(seq(440,10000,100))
+#' getNotes(seq(440,10000,100),maxOctave=10,option='#')
+#' @export
+getNotes <- function(frequencies,minOctave=0,maxOctave=8,option='b'){
+  out=rep(NA,length(frequencies))
+  DF=noteFrequencyTable(minOctave,maxOctave)
+  colname=ifelse(option=='#','note2','note1')
+  for(i in 1:length(frequencies)){
+    k=which.min(abs(frequencies[i]-DF$frequency))
+    out[i]=DF[[colname]][k]
+  }
+  return(out)
+}
+
+#***************************************************************************----
 # Miscellaneous private utilities ----
 
 #' timeVector function
