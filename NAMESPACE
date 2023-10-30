@@ -2,6 +2,7 @@
 
 S3method(plot,envelope)
 S3method(plot,soundSample)
+export(applyDisto)
 export(applyEnvelope)
 export(as.Wave)
 export(as.soundSample)
