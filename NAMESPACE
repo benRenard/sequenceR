@@ -2,6 +2,7 @@
 
 S3method(plot,envelope)
 S3method(plot,soundSample)
+export(applyDelay)
 export(applyDisto)
 export(applyEnvelope)
 export(as.Wave)

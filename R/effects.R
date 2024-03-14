@@ -23,6 +23,65 @@ applyDisto <- function(sample,type=c('clip','tanh'),level=2,...,rescale=FALSE){
   return(out)
 }
 
+#' Delay effect
+#'
+#' Apply a delay to a sound sample. See https://en.wikipedia.org/wiki/Comb_filter
+#'
+#' @param sample soundSample object, input sample
+#' @param type Character string, the delay type: feedforward or feedback
+#' @param delayTime Numeric >0, delay time in s.
+#' @param echoes Numeric vector >0. The size of the vector gives the number of echoes, the values the level of each echo (generally decreases to 0).
+#' @return The sound sample with a delay effect
+#' @examples
+#' # example code
+#' notes=c('E3','G3','A3','B3','D4','E4','G4')
+#' synth=getSynth(notes)
+#' raw=as.soundSample(play.instrument(synth,notes=notes[c(1,2,3,2,3,4,3,4,5,4,5,6,5,6,7)]))
+#' plot(raw) # listen(raw)
+#' # Single echo by default
+#' cooked=applyDelay(raw)
+#' plot(cooked) # listen(cooked)
+#' # Multiple echoes
+#' cooked=applyDelay(raw,echoes=1/(1:10))
+#' plot(cooked) # listen(cooked)
+#' # Feedback-type delay
+#' cooked=applyDelay(raw,echoes=1/(1:10),type='feedback')
+#' plot(cooked) # listen(cooked)
+#' @export
+applyDelay <- function(sample,type='feedforward',delayTime=0.6,echoes=c(0.8)){
+  if(!(type %in% c('feedforward','feedback'))){
+    mess="Unknwon delay type; only known types are 'feedforward' and 'feedback'"
+    stop(mess,call.=FALSE)
+  }
+  # delay length in number of samples
+  delayLength=round(delayTime*sample$rate)
+  # Initialize output: wave duration needs to be augmented to avoid sudden clipping
+  if(type=='feedforward'){
+    nAdd=delayLength * (length(echoes)+1)
+  } else { # trickyer, semi-empirical augmentation for feedback delay. 2DO: improve this
+    nAdd=delayLength * sum(echoes*seq(length(echoes),1,-1))
+  }
+  w0=c(sample$wave,rep(0,nAdd)) # add trailing zeros to wave
+  out=sample
+  out$wave=w0
+  out$n=out$n+nAdd
+  out$duration=out$n/out$rate
+  # Add echoes to initial wave
+  for(i in 1:length(echoes)){
+    # get indices of delayed signal
+    ix=(1:out$n)-delayLength*i
+    ix[ix<1]=1
+    # alter wave
+    if(type=='feedforward'){
+      out$wave=out$wave+echoes[i]*w0[ix]
+    } else { # recursive echo
+      out$wave=out$wave+echoes[i]*out$wave[ix]
+    }
+  }
+  out$wave=rescale(out$wave,-1,1)
+  return(out)
+}
+
 #***************************************************************************----
 # Private utilities ----
 # 2DO: check this for more disto functions:
