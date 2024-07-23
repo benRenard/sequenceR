@@ -1,3 +1,109 @@
+range_bpm=c(100,140)
+range_master=c(0.2,1)
+range_bass=c(0,1)
+range_hihat=c(0.2,1)
+
+spb=60/range_bpm # seconds per beat
+spt=spb/4 # seconds per time step (here time step = 16th note i.e. 1/4 of a beat)
+style='major'
+linkNotes=TRUE
+volPar=2
+
+bassNote='E1'
+oneNote='E3'
+
+if(style=='oriental'){
+  notes=c('E3','G3','A3','B3','C4','Eb4','E4','Gb4','G4','A4','B4','C5')
+} else if(style=='major'){
+  notes=c('E2','A2','Db3','E3','B3','Eb4','E4','A4')
+} else if(style=='minor'){
+  notes=c('E2','G2','B2','D3','Gb3','A3','C4',
+          'E4','G4','B4','D5','Gb5','A5','C5','E5')
+  # notes=c('E3','B3','E4','B4','D4','E4','G4','B4')
+} else if(style=='lydian'){
+  notes=c('E3','Ab3','Bb3','B3','Db4','E4','Ab4','Bb4','Bb4')
+} else if(style=='penta'){
+  notes=c('E3','G3','A3','B3','D4','E4','G4','A4','B4','D5','E5')
+} else if(style=='oneNote'){
+  notes=c('E3','E3')
+}
+
+inst1=getSynth(unique(notes),type='triangle',sustain=0.05)
+inst2=getSynth(unique(notes),sustain=0.05)
+
+bass=getSynth(bassNote,duration=3,sustain=0.05)
+
+
+
+dat=globalT #[globalT$Year %in% 1951:2001,]
+years=dat[,1]
+values=dat[,2]
+is.anomaly=TRUE
+mask= !is.na(years) & !is.na(values)
+x=years[mask];y=values[mask]
+if(!is.anomaly){
+  y=(y-mean(y))/sd(y)
+}
+ix=1:length(y)
+nma=7
+ma=rep(NA,length(y))
+for(i in 1:length(y)){
+  foo=y;
+  foo[ix>i+nma | ix<i-nma]=NA
+  ma[i]=mean(foo,na.rm = TRUE)
+}
+plot(x,y)
+lines(x,ma)
+
+master=rescale(ma,range_master[1],range_master[2])
+
+spts=rescale(y,spt[1],spt[2])
+tim=cumsum(spts)-spts[1]
+pitch=rescale(y-ma)
+ix=as.integer(rescale(pitch)*(length(notes)-1))+1
+vol=master*rescale(y-ma,0,1)^volPar
+if(linkNotes){
+  mask=c(TRUE,diff(ix)!=0)
+} else {
+  mask=rep(TRUE,length(vol))
+}
+i1=play.instrument(inst1,notes=notes[ix[mask]],time=tim[mask],
+                   volume=vol[mask],
+                   fadeout=rep(Inf,sum(mask)))
+vol=master*rescale(y-ma,1,0)^volPar
+i2=play.instrument(inst2,notes=notes[ix[mask]],time=tim[mask],
+                   volume=vol[mask],
+                   fadeout=rep(Inf,sum(mask)))
+
+pattern=c(1,0.1,0.02,0.1)
+vol=rep_len(pattern,length(tim))
+cy=sequence(ride,time=tim,volume=vol)
+
+mask=y<ma
+tim2=tim[mask]
+vol=master[mask]*rescale((y-ma)[mask],range_bass[2],range_bass[1])^volPar
+dk=sequence(kick,time=tim2,volume=vol)
+ba=play.instrument(bass,notes=as.integer(rep(1,length(tim2))),
+                   time=tim2,volume=vol,
+                   fadein=rep(0.01,length(tim2)),
+                   fadeout=rep(Inf,length(tim2)))
+
+mask=y>ma
+tim2=tim[mask]
+vol=master[mask]*rescale((y-ma)[mask],range_hihat[1],range_hihat[2])
+hh=sequence(hiHat,time=tim2,volume=vol)
+
+final=mix(waves=c(list(i1,i2,cy,dk,ba,hh)),volume=c(1,1,1,1,1,1),pan=c(-1,1,0,0,0,0))
+
+writeWave(final,'temp.wav')
+system(paste('cd',getwd(),'&& ffmpeg -y -i temp.wav','stripes.mp3'))
+file.remove('temp.wav')
+
+
+#######
+# OLD VERSION
+######
+
 # library(ggplot2);library(gganimate)
 # loadInstruments <- function(instdir=file.path('instruments')){
 #   load(file.path(instdir,'bassStandup.RData'))
