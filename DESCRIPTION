@@ -1,12 +1,14 @@
 Package: sequenceR
 Type: Package
 Title: A R-Based Sequencer for Data Sonification
-Version: 0.1.0
-Authors@R: person("Benjamin", "Renard", email = "benjamin.renard@inrae.fr",
-    role = c("aut", "cre"))
-Description: This package provides a R sequencer to mix audio samples.
+Version: 1.0.0
+Authors@R: c(
+    person("Benjamin", "Renard", email = "benjamin.renard@inrae.fr",role = c("aut", "cre","cph"),comment = c(ORCID = "0000-0001-8447-5430")),
+    person("INRAE", role = c("fnd")),
+    person("European Commission", role = c("fnd"),comment = c("This project has received funding from the European Union’s Horizon 2020 research and innovation programme under the Marie Sklodowska-Curie grant agreement No 835496")))
+Description: A R sequencer to mix audio samples.
     It also defines miscellaneous related objects and methods.
-License: GPL-3 + file LICENSE
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Depends:
