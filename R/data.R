@@ -73,3 +73,10 @@
 #'
 #' @source \url{https://www.metoffice.gov.uk/hadobs/hadcrut4/data/current/download.html}
 "globalT"
+
+#' TR-909 minimalistic drumkit
+#'
+#' An instrument containing a few basic sounds from a TR-909-inspired drumkit
+#'
+#' @source \url{https://freesound.org/people/altemark/packs/1643/}
+"mini909"

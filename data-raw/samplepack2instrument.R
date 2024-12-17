@@ -159,3 +159,10 @@ save(percussionFWS,file=file.path('instruments','percussionFWS.RData'),compress=
 
 inst=percussionFWS
 play(play.instrument(inst,time=0.5*(1:length(inst)),fadein=rep(0,length(inst))))
+
+# mini TR-909
+packDir=file.path('data-raw','samplePacks','drumkits','TR-909')
+names=c('bass','snare','clap','hihat','hihat_o','ride')
+files=c('_bd18','_sn03','_clp02','_ch08','_oh14','_ride01')
+mini909=buildInstrument(packDir,files,names)
+save(mini909,file=file.path('instruments','mini909.RData'),compress='xz')
