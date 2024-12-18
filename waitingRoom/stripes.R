@@ -88,20 +88,44 @@ sonifyStripes=function(dat=globalT,bpm=135,minVol=0.1,nma=10,
             volume=c(1,1,0.25,0.65,1,0.8,0.75,0.65,0.5),
             pan=c(-0.5,0.5,0,0,1,-1,0,0,0))
   return(list(mix=final,data=data.frame(year=years,value=values,movingAverage=ma,anomalies=anom),
+              bpm=bpm,spt=spt,quantiles=qs,
               waves=list(kick=ki,hihat=hh,openHihat=hho,
                          posPercussion=posP,negPercussion=negP,
                          bass=ba,key1=key[[1]],key2=key[[2]])))
 }
 
-w=sonifyStripes(nma=50)
+w=sonifyStripes(nma=30)
 writeWave(w$mix,'temp.wav')
 system(paste('cd',getwd(),'&& ffmpeg -y -i temp.wav','stripes.mp3'))
 file.remove('temp.wav')
 
 
+library(ggplot2);library(av)
+tps=1/w$spt# time step per second (here time step = 16th note i.e. 1/4 of a beat)
+resfactor=2 # Resolution factor (0.5 poor, 1 OKish, 2 good quality)
 
+ymin=min(w$data$value);ymax=max(w$data$value)
 
-
+makeplot <- function(alf=0.6){
+  for(tstep in 1:(NROW(w$data)+20)){
+    message(tstep)
+    dd=w$data[1:tstep,]
+    g=ggplot(dd)+
+      geom_rect(aes(xmin=year-0.5,xmax=year+0.5,ymin=ymin,ymax=ymax,fill=value))+
+      scale_fill_distiller(palette='RdBu',limits=range(w$data$value))+
+      geom_line(aes(x=year,y=movingAverage),alpha=alf)+
+      geom_segment(aes(x=year,y=movingAverage,yend=value),linewidth=2,alpha=alf)+
+      geom_point(data=dd[ dd$anomalies < w$quantiles[1],],aes(x=year,y=value,size=w$quantiles[1]-anomalies),alpha=alf)+
+      geom_point(data=dd[ dd$anomalies > w$quantiles[2],],aes(x=year,y=value,size=anomalies-w$quantiles[2]),alpha=alf)+
+      scale_size(range=c(0,8),limits=c(0,max(w$quantiles[1]-w$data$anomalies,w$data$anomalies-w$quantiles[2])))+
+      xlim(range(w$data$year)+c(-1,1))+ylim(range(w$data$value))+
+      theme_void()+theme(legend.position='none')
+    print(g)
+  }
+}
+av_capture_graphics(makeplot(),output='stripes.mp4',audio=file.path('stripes.mp3'),
+                    res=72*resfactor, width=1280*resfactor,height=720*resfactor,
+                    framerate=tps)
 
 # range_bpm=c(100,140)
 # range_master=c(0.2,1)
