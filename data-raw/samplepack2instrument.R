@@ -1,7 +1,7 @@
 library(sequenceR)
 
-buildInstrument <- function(packDir,files,names,timeBeforePeak=NA){
-  allFiles=list.files(packDir)
+buildInstrument <- function(packDir,files,names,timeBeforePeak=NA,recursive=FALSE){
+  allFiles=list.files(packDir,recursive=recursive)
   sam=vector(mode='list',length=length(files))
   for(i in 1:length(files)){
     j=which(grepl(files[i],allFiles,fixed=TRUE))
@@ -166,3 +166,30 @@ names=c('bass','snare','clap','hihat','hihat_o','ride')
 files=c('_bd18','_sn03','_clp02','_ch08','_oh14','_ride01')
 mini909=buildInstrument(packDir,files,names)
 save(mini909,file=file.path('instruments','mini909.RData'),compress='xz')
+# full TR-909
+names=c(paste0('bd',sprintf("%02d",1:33)), # bass drum
+        paste0('sn',sprintf("%02d",1:37)), # snare
+        paste0('ch',sprintf("%02d",1:32)), # closed hi-hat
+        paste0('oh',sprintf("%02d",1:15)), # open hi-hat
+        paste0('ride',sprintf("%02d",1:12)), # ride cymbal
+        paste0('rs',sprintf("%02d",1:4)), # rim shot
+        paste0('lt',sprintf("%02d",1:24)), # low tom
+        paste0('mt',sprintf("%02d",1:23)), # medium tom
+        paste0('ht',sprintf("%02d",1:22)), # high tom
+        paste0('clp',sprintf("%02d",1:22)) # hand clap
+        )
+files=names
+TR909=buildInstrument(packDir,files,names)
+save(TR909,file=file.path('instruments','TR909.RData'),compress='xz')
+
+# mini TR-808
+packDir=file.path('data-raw','samplePacks','drumkits','TR-808')
+names=c('bass','snare','clap','hihat','hihat_o','ride','congaLow','congaMid','congaHigh')
+files=c('BD5050','SD5050','CP','CH','OH50','CY5050','LC50','MC50','HC50')
+mini808=buildInstrument(packDir,files,names,recursive=TRUE)
+save(mini808,file=file.path('instruments','mini808.RData'),compress='xz')
+# Full TR-808
+files=list.files(packDir,'.WAV',recursive=TRUE)
+names=substr(files,4,nchar(files)-4)
+TR808=buildInstrument(packDir,files,names,recursive=TRUE)
+save(TR808,file=file.path('instruments','TR808.RData'),compress='xz')
