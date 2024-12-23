@@ -23,6 +23,7 @@ Suggests:
     ggplot2,
     gganimate,
     tidyr,
+    dplyr,
     av
 RoxygenNote: 7.2.3
 VignetteBuilder: knitr
