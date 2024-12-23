@@ -8,7 +8,7 @@ oscillator(type = "sine", freq = 440, duration = 1, phase = 0, rate = 44100)
 }
 \arguments{
 \item{type}{String, oscillator type, one of 'sine', 'saw', 'square' or 'triangle'.
-If an unknowm string is provided, a sine oscillator will be used.}
+If an unknown string is provided, a sine oscillator will be used.}
 
 \item{freq}{Numeric, note frequency in Hz}
 

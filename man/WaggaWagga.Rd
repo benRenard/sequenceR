@@ -8,9 +8,9 @@
 An object of class \code{data.frame} with 79 rows and 3 columns.
 }
 \source{
-\url{http://www.bom.gov.au/cgi-bin/climate/hqsites/site_data.cgi?period=annual&variable=meanT&station=072150}
+http://www.bom.gov.au/cgi-bin/climate/hqsites/site_data.cgi?period=annual&variable=meanT&station=072150
 
-\url{http://www.bom.gov.au/cgi-bin/climate/hqsites/site_data.cgi?period=annual&variable=rain&station=072150}
+http://www.bom.gov.au/cgi-bin/climate/hqsites/site_data.cgi?period=annual&variable=rain&station=072150
 }
 \usage{
 WaggaWagga

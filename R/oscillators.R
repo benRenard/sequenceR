@@ -78,7 +78,7 @@ oscillator_saw <- function(freq=440,duration=1,phase=0,rate=44100){
 #'
 #' Creates a soundSample using a oscillator.
 #' @param type String, oscillator type, one of 'sine', 'saw', 'square' or 'triangle'.
-#'     If an unknowm string is provided, a sine oscillator will be used.
+#'     If an unknown string is provided, a sine oscillator will be used.
 #' @param freq Numeric, note frequency in Hz
 #' @param duration Numeric, note duration in second
 #' @param phase Numeric, phase in radians (typically between 0 and 2*pi)
