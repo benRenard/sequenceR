@@ -34,17 +34,18 @@ getSynth(
 \item{sustainPar}{Numeric, the higher the value the smaller the sustain volume for higher harmonics}
 
 \item{type}{String, oscillator type, one of 'sine', 'saw', 'square' or 'triangle'.
-If an unknowm string is provided, a sine oscillator will be used.}
+If an unknown string is provided, a sine oscillator will be used.}
 }
 \value{
 An object of class 'instrument'.
 }
 \description{
-Creates an additive, Hammond-inspire Synthesizer.
+Creates an additive, Hammond-inspired Synthesizer.
 Higher harmonics decay faster and have smaller sustain.
 }
 \examples{
 synth <- getSynth(c('E2','B2','E3','G3','A3'))
-w=play.instrument(synth,time=(0:(length(synth)-1))*0.5,fadeout=rep(Inf,length(synth)));plot(w)
-# play(w) # uncomment to listen
+w=play.instrument(synth,time=(0:(length(synth)-1))*0.5,fadeout=rep(Inf,length(synth)))
+tuneR::plot(w)
+\dontrun{tuneR::play(w)}
 }

@@ -46,9 +46,9 @@
 #' @examples
 #' w <- sonifyStripes()
 #' @export
-sonifyStripes=function(values=globalT$Anomaly,bpm=135,minVol=0.1,nma=10,pClap=0.15,synthVar=0.5,
-                       kick=mini909$bass,hihat=mini909$hihat,openHihat=mini909$hihat_o,
-                       posPercussion=mini909$snare,negPercussion=mini909$clap,
+sonifyStripes=function(values=sequenceR::globalT$Anomaly,bpm=135,minVol=0.1,nma=10,pClap=0.15,synthVar=0.5,
+                       kick=sequenceR::mini909$bass,hihat=sequenceR::mini909$hihat,openHihat=sequenceR::mini909$hihat_o,
+                       posPercussion=sequenceR::mini909$snare,negPercussion=sequenceR::mini909$clap,
                        bassNote='E1',
                        chord1=c('E2','E3','G3','D4','Gb4'),
                        chord2=c('E2','D3','Gb3','A3','E4'),
@@ -89,7 +89,7 @@ sonifyStripes=function(values=globalT$Anomaly,bpm=135,minVol=0.1,nma=10,pClap=0.
   }
   # Get percussions for strong anomalies below / above moving average
   anom=values-ma
-  qs=quantile(anom,probs=c(pClap,1-pClap))
+  qs=stats::quantile(anom,probs=c(pClap,1-pClap))
   if(diff(range(qs))>0){
     volPos=master*rescale((anom-qs[2])*(anom > qs[2]))
     volNeg=master*rescale((qs[1]-anom)*(anom < qs[1]))
@@ -141,13 +141,15 @@ sonifyStripes=function(values=globalT$Anomaly,bpm=135,minVol=0.1,nma=10,pClap=0.
       for(tstep in 1:(NROW(dat)+trail)){
         message(paste0('Creating image ',tstep,'/',NROW(dat)+trail))
         dd=dat[1:tstep,]
-        g=ggplot2::ggplot(dd)+
-          ggplot2::geom_rect(ggplot2::aes(xmin=time-0.5,xmax=time+0.5,ymin=ymin,ymax=ymax,fill=value))+
+        neg=dd[ dd$anomaly < qs[1],]
+        pos=dd[ dd$anomaly > qs[2],]
+        g=ggplot2::ggplot()+
+          ggplot2::geom_rect(ggplot2::aes(xmin=dd$time-0.5,xmax=dd$time+0.5,ymin=ymin,ymax=ymax,fill=dd$value))+
           ggplot2::scale_fill_distiller(palette='RdBu',limits=range(dat$value))+
-          ggplot2::geom_line(ggplot2::aes(x=time,y=movingAverage),alpha=alfa)+
-          ggplot2::geom_segment(ggplot2::aes(x=time,y=movingAverage,yend=value),linewidth=2,alpha=alfa)+
-          ggplot2::geom_point(data=dd[ dd$anomaly < qs[1],],ggplot2::aes(x=time,y=value,size=qs[1]-anomaly),alpha=alfa)+
-          ggplot2::geom_point(data=dd[ dd$anomaly > qs[2],],ggplot2::aes(x=time,y=value,size=anomaly-qs[2]),alpha=alfa)+
+          ggplot2::geom_line(ggplot2::aes(x=dd$time,y=dd$movingAverage),alpha=alfa)+
+          ggplot2::geom_segment(ggplot2::aes(x=dd$time,y=dd$movingAverage,yend=dd$value),linewidth=2,alpha=alfa)+
+          ggplot2::geom_point(ggplot2::aes(x=neg$time,y=neg$value,size=qs[1]-neg$anomaly),alpha=alfa)+
+          ggplot2::geom_point(ggplot2::aes(x=pos$time,y=pos$value,size=pos$anomaly-qs[2]),alpha=alfa)+
           ggplot2::scale_size(range=c(0,8),limits=c(0,max(qs[1]-dat$anomaly,dat$anomaly-qs[2])))+
           ggplot2::xlim(range(dat$time)+c(-1,1))+ggplot2::ylim(range(dat$value))+
           ggplot2::theme_void()+ggplot2::theme(legend.position='none')

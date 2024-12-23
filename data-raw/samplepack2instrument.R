@@ -157,9 +157,6 @@ files=c('Conga-Low-2','Conga-High-2','Conga-Mute-1','Conga-Low-1','Conga-High-1'
 percussionFWS=buildInstrument(packDir,files,names)
 save(percussionFWS,file=file.path('instruments','percussionFWS.RData'),compress='xz')
 
-inst=percussionFWS
-play(play.instrument(inst,time=0.5*(1:length(inst)),fadein=rep(0,length(inst))))
-
 # mini TR-909
 packDir=file.path('data-raw','samplePacks','drumkits','TR-909')
 names=c('bass','snare','clap','hihat','hihat_o','ride')
@@ -193,3 +190,6 @@ files=list.files(packDir,'.WAV',recursive=TRUE)
 names=substr(files,4,nchar(files)-4)
 TR808=buildInstrument(packDir,files,names,recursive=TRUE)
 save(TR808,file=file.path('instruments','TR808.RData'),compress='xz')
+
+inst=TR808
+play(play.instrument(inst,time=0.5*(1:length(inst)),fadein=rep(0,length(inst))))

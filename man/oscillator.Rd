@@ -27,5 +27,5 @@ Creates a soundSample using a oscillator.
 \examples{
 sam <- oscillator(type='saw',freq=220,duration=0.1)
 plot(sam)
-# listen(sam) # uncomment to listen
+\dontrun{listen(sam)}
 }

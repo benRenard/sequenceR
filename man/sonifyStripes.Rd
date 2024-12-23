@@ -5,17 +5,17 @@
 \title{Climate stripes sonification}
 \usage{
 sonifyStripes(
-  values = globalT$Anomaly,
+  values = sequenceR::globalT$Anomaly,
   bpm = 135,
   minVol = 0.1,
   nma = 10,
   pClap = 0.15,
   synthVar = 0.5,
-  kick = mini909$bass,
-  hihat = mini909$hihat,
-  openHihat = mini909$hihat_o,
-  posPercussion = mini909$snare,
-  negPercussion = mini909$clap,
+  kick = sequenceR::mini909$bass,
+  hihat = sequenceR::mini909$hihat,
+  openHihat = sequenceR::mini909$hihat_o,
+  posPercussion = sequenceR::mini909$snare,
+  negPercussion = sequenceR::mini909$clap,
   bassNote = "E1",
   chord1 = c("E2", "E3", "G3", "D4", "Gb4"),
   chord2 = c("E2", "D3", "Gb3", "A3", "E4"),

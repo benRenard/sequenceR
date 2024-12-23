@@ -1,25 +1,28 @@
 Package: sequenceR
 Type: Package
-Title: A R-Based Sequencer for Data Sonification
+Title: An R-Based Sequencer for Data Sonification
 Version: 1.0.0
 Authors@R: c(
     person("Benjamin", "Renard", email = "benjamin.renard@inrae.fr",role = c("aut", "cre","cph"),comment = c(ORCID = "0000-0001-8447-5430")),
     person("INRAE", role = c("fnd")),
     person("European Commission", role = c("fnd"),comment = c("This project has received funding from the European Union’s Horizon 2020 research and innovation programme under the Marie Sklodowska-Curie grant agreement No 835496")))
-Description: A R sequencer to mix audio samples.
-    It also defines miscellaneous related objects and methods.
+Description: A rudimentary sequencer to define, manipulate and mix sound samples.
+    The underlying motivation is to sonify data.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
+URL: https://github.com/benRenard/sequenceR
+BugReports: https://github.com/benRenard/sequenceR/issues
 Depends:
-    R (>= 3.5.0),
-    tuneR
-RoxygenNote: 7.2.3
-Suggests: 
+    R (>= 3.5.0)
+Imports: 
+	tuneR
+Suggests:
     knitr,
     rmarkdown,
     ggplot2,
     gganimate,
     tidyr,
     av
+RoxygenNote: 7.2.3
 VignetteBuilder: knitr

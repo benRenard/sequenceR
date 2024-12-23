@@ -53,7 +53,7 @@ as.soundSample <- function(w,pan=0){
 #' @examples
 #' sam <- soundSample(sin(2*pi*seq(0,1,,44100)*440)) # 1-second A (440 Hz)
 #' w <- as.Wave(sam)
-#' plot(w)
+#' tuneR::plot(w)
 #' @export
 as.Wave <- function(x){
   w <- tuneR::Wave(left = x$wave, right = x$wave, samp.rate = x$rate, bit = 16)
@@ -144,8 +144,7 @@ write.soundSample <- function(x,file){
 #' @examples
 #' # Define sound sample
 #' sam <- soundSample(sin(2*pi*seq(0,1,,44100)*440)+0.1*rnorm(44100)) # 1-second noisy A
-#' # Uncomment to play it
-#' # listen(sam)
+#' \dontrun{listen(sam)}
 #' @importFrom tuneR Wave normalize play
 #' @export
 listen <- function(x){
@@ -191,17 +190,14 @@ getTime <- function(x){
 #' # Sequence it
 #' s <- sequence(sam,time=c(0,0.5,0.75),letRing=FALSE,volume=c(0.4,1,1),pan=c(-1,0,1))
 #' # View the result
-#' plot(s)
-#' # Uncomment to play it
-#' # play(s)
-#'
+#' tuneR::plot(s)
+#' \dontrun{tuneR::play(s)}
 #' #' EXAMPLE 2 - make it funkyer
 #' # 2-second sequence based on hi-hat sample
 #' s <- sequence(hiHat,time=seq(0,2,,16),volume=rep(c(1,rep(0.5,3)),4))
 #' # View the result
-#' plot(s)
-#' # Uncomment to play it
-#' # play(s)
+#' tuneR::plot(s)
+#' \dontrun{tuneR::play(s)}
 #' @export
 sequence <- function(sample,time,letRing=TRUE,
                      volume=rep(1,NROW(time)),pan=rep(0,NROW(time)),
@@ -236,63 +232,6 @@ sequence <- function(sample,time,letRing=TRUE,
                       samp.rate=sample$rate,bit=16)
   wave <- tuneR::normalize(wave, unit = "16")
   return(wave)
-}
-
-#' Apply an envelope
-#'
-#' Apply a volume envelope to a sound sample.
-#'
-#' @param sample Sound sample object.
-#' @param env Envelope object. Envelope values should all be between 0 and 1.
-#' @return A sound sample object.
-#' @examples
-#' # Define the sound sample
-#' sam <- soundSample(sin(2*pi*seq(0,0.5,1/44100)*220)) # 0.5-second A (220 Hz)
-#' # Define the envelope
-#' env <- envelope(t=c(0,0.03,1),v=c(0,1,0))
-#' # Apply it
-#' res <- applyEnvelope(sam,env)
-#' # Compare waveforms
-#' par(mfrow=c(1,2))
-#' plot(sam,main='before');plot(res,main='after')
-#' # Uncomment to listen to the result
-#' # listen(res)
-#' @export
-applyEnvelope <- function(sample,env){
-  # Check envelop values are between 0 and 1
-  if( max(env$v)>1 | min(env$v)<0){
-    mess=paste0("Invalid volume envelope: should be normalized between 0 and 1")
-    stop(mess,call.=FALSE)
-  }
-  # Get time steps of input sound sample
-  tim=getTime(sample)
-  # regrid envelope on those time steps
-  v=stats::approx(x=env$t*sample$duration,y=env$v,xout=tim)$y
-  # modify sample
-  out=sample;out$wave=out$wave*v
-  return(out)
-}
-
-#' Pitch shifter
-#'
-#' Shift the pitch of a sound sample by n semitones. Note that the duration of the
-#' resulting sample is not the same as that of the original.
-#'
-#' @param sample Sound sample object.
-#' @param n numeric, number of semitones.
-#' @return A sound sample object.
-#' @examples
-#' # Define a A sound sample and get a D by adding 5 semitones
-#' A <- soundSample(sin(2*pi*seq(0,0.5,1/44100)*220)) # 0.5-second A (220 Hz)
-#' D <- shiftPitch(A,5)
-#' @export
-shiftPitch <- function(sample,n){
-  k=(2^(n/12))
-  t.in=seq(from=0,by=1/sample$rate,length.out=sample$n)
-  t.out=seq(from=0,to=sample$duration,by=k/sample$rate)
-  foo=stats::approx(x=t.in,y=sample$wave,xout=t.out)
-  out=soundSample(foo$y[!is.na(foo$y)])
-  return(out)
 }
 
 #***************************************************************************----

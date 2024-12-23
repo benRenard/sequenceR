@@ -29,11 +29,8 @@ k <- sequence(kick,time=2*c(0,8)/16)
 s <- sequence(snare,time=2*c(4,12)/16)
 # Mix the 3 tracks
 m1 <- mix(list(hh,k,s))
-# Uncomment to play the result
-# play(m1)
-
+\dontrun{tuneR::play(m1)}
 # Try with less hihat, more kick
 m2 <- mix(list(hh,k,s),volume=c(0.3,1,0.8))
-# Uncomment to play the result
-# play(m2)
+\dontrun{tuneR::play(m2)}
 }

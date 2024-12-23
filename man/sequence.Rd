@@ -42,15 +42,12 @@ sam <- soundSample(sin(2*pi*seq(0,1,,44100)*440)+0.1*rnorm(44100)) # 1-second no
 # Sequence it
 s <- sequence(sam,time=c(0,0.5,0.75),letRing=FALSE,volume=c(0.4,1,1),pan=c(-1,0,1))
 # View the result
-plot(s)
-# Uncomment to play it
-# play(s)
-
+tuneR::plot(s)
+\dontrun{tuneR::play(s)}
 #' EXAMPLE 2 - make it funkyer
 # 2-second sequence based on hi-hat sample
 s <- sequence(hiHat,time=seq(0,2,,16),volume=rep(c(1,rep(0.5,3)),4))
 # View the result
-plot(s)
-# Uncomment to play it
-# play(s)
+tuneR::plot(s)
+\dontrun{tuneR::play(s)}
 }

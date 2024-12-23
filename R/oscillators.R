@@ -9,7 +9,7 @@
 #' @examples
 #' sam <- oscillator_sine(freq=220,duration=0.1)
 #' plot(sam)
-#' # listen(sam) # uncomment to listen
+#' \dontrun{listen(sam)}
 #' @export
 oscillator_sine <- function(freq=440,duration=1,phase=0,rate=44100){
   time=timeVector(duration,rate)
@@ -28,7 +28,7 @@ oscillator_sine <- function(freq=440,duration=1,phase=0,rate=44100){
 #' @examples
 #' sam <- oscillator_square(freq=220,duration=0.1)
 #' plot(sam)
-#' # listen(sam) # uncomment to listen
+#' \dontrun{listen(sam)}
 #' @export
 oscillator_square <- function(freq=440,duration=1,phase=0,rate=44100){
   w=oscillator_sine(freq,duration,phase,rate)
@@ -47,7 +47,7 @@ oscillator_square <- function(freq=440,duration=1,phase=0,rate=44100){
 #' @examples
 #' sam <- oscillator_triangle(freq=220,duration=0.1)
 #' plot(sam)
-#' # listen(sam) # uncomment to listen
+#' \dontrun{listen(sam)}
 #' @export
 oscillator_triangle <- function(freq=440,duration=1,phase=0,rate=44100){
   w=oscillator_sine(freq,duration,phase,rate)
@@ -66,7 +66,7 @@ oscillator_triangle <- function(freq=440,duration=1,phase=0,rate=44100){
 #' @examples
 #' sam <- oscillator_saw(freq=220,duration=0.1)
 #' plot(sam)
-#' # listen(sam) # uncomment to listen
+#' \dontrun{listen(sam)}
 #' @export
 oscillator_saw <- function(freq=440,duration=1,phase=0,rate=44100){
   time=timeVector(duration,rate)
@@ -87,7 +87,7 @@ oscillator_saw <- function(freq=440,duration=1,phase=0,rate=44100){
 #' @examples
 #' sam <- oscillator(type='saw',freq=220,duration=0.1)
 #' plot(sam)
-#' # listen(sam) # uncomment to listen
+#' \dontrun{listen(sam)}
 #' @export
 oscillator <- function(type='sine',freq=440,duration=1,phase=0,rate=44100){
   switch(type,
@@ -109,7 +109,7 @@ oscillator <- function(type='sine',freq=440,duration=1,phase=0,rate=44100){
 #' @examples
 #' sam <- oscillator_pattern(pattern=airquality$Ozone,freq=110,duration=0.1)
 #' plot(sam)
-#' # listen(sam) # uncomment to listen
+#' \dontrun{listen(sam)}
 #' @export
 oscillator_pattern <- function(pattern,freq=440,duration=1,rate=44100){
   time=seq(0,1/freq,1/rate) # time vector for a single pattern

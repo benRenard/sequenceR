@@ -26,14 +26,18 @@ Apply a delay to a sound sample. See https://en.wikipedia.org/wiki/Comb_filter
 notes=c('E3','G3','A3','B3','D4','E4','G4')
 synth=getSynth(notes)
 raw=as.soundSample(play.instrument(synth,notes=notes[c(1,2,3,2,3,4,3,4,5,4,5,6,5,6,7)]))
-plot(raw) # listen(raw)
+plot(raw)
+\dontrun{listen(raw)}
 # Single echo by default
 cooked=applyDelay(raw)
-plot(cooked) # listen(cooked)
+plot(cooked)
+\dontrun{listen(cooked)}
 # Multiple echoes
 cooked=applyDelay(raw,echoes=1/(1:10))
-plot(cooked) # listen(cooked)
+plot(cooked)
+\dontrun{listen(cooked)}
 # Feedback-type delay
 cooked=applyDelay(raw,echoes=1/(1:10),type='feedback')
-plot(cooked) # listen(cooked)
+plot(cooked)
+\dontrun{listen(cooked)}
 }

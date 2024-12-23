@@ -34,16 +34,17 @@ getSynthNote(
 \item{sustainPar}{Numeric, the higher the value the smaller the sustain volume for higher harmonics}
 
 \item{type}{String, oscillator type, one of 'sine', 'saw', 'square' or 'triangle'.
-If an unknowm string is provided, a sine oscillator will be used.}
+If an unknown string is provided, a sine oscillator will be used.}
 }
 \value{
 An object of class 'soundSample'.
 }
 \description{
-Creates one note with frequency freq from an additive, Hammond-inspire synth.
+Creates one note with frequency freq from an additive, Hammond-inspired synth.
 Higher harmonics decay faster and have smaller sustain.
 }
 \examples{
-sam <- getSynthNote(440,nHarmonics=7);plot(sam)
-# listen(sam) # uncomment to listen
+sam <- getSynthNote(440,nHarmonics=7)
+plot(sam)
+\dontrun{listen(sam)}
 }

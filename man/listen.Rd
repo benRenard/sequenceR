@@ -18,6 +18,5 @@ Listen to a sound sample. Based on tuneR function 'play'
 \examples{
 # Define sound sample
 sam <- soundSample(sin(2*pi*seq(0,1,,44100)*440)+0.1*rnorm(44100)) # 1-second noisy A
-# Uncomment to play it
-# listen(sam)
+\dontrun{listen(sam)}
 }

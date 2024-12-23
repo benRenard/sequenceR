@@ -51,6 +51,40 @@ plot.envelope <- function(x,...){
   plot(x$t,x$v,type='b',xlab='normalized time',ylab='envelope',pch=19,...)
 }
 
+#' Apply an envelope
+#'
+#' Apply a volume envelope to a sound sample.
+#'
+#' @param sample Sound sample object.
+#' @param env Envelope object. Envelope values should all be between 0 and 1.
+#' @return A sound sample object.
+#' @examples
+#' # Define the sound sample
+#' sam <- soundSample(sin(2*pi*seq(0,0.5,1/44100)*220)) # 0.5-second A (220 Hz)
+#' # Define the envelope
+#' env <- envelope(t=c(0,0.03,1),v=c(0,1,0))
+#' # Apply it
+#' res <- applyEnvelope(sam,env)
+#' # Compare waveforms
+#' plot(sam,main='before')
+#' plot(res,main='after')
+#' \dontrun{listen(res)}
+#' @export
+applyEnvelope <- function(sample,env){
+  # Check envelop values are between 0 and 1
+  if( max(env$v)>1 | min(env$v)<0){
+    mess=paste0("Invalid volume envelope: should be normalized between 0 and 1")
+    stop(mess,call.=FALSE)
+  }
+  # Get time steps of input sound sample
+  tim=getTime(sample)
+  # regrid envelope on those time steps
+  v=stats::approx(x=env$t*sample$duration,y=env$v,xout=tim)$y
+  # modify sample
+  out=sample;out$wave=out$wave*v
+  return(out)
+}
+
 #***************************************************************************----
 # internal constructor ----
 new_envelope<-function(t,v){

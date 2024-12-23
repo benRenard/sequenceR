@@ -11,9 +11,11 @@
 #'     If an unknowm string is provided, a sine oscillator will be used.
 #' @return An object of class 'soundSample'.
 #' @examples
-#' sam1 <- getHarmonics(440,1);plot(sam1)
-#' sam2 <- getHarmonics(440,3);plot(sam2)
-#' # listen(sam2) # uncomment to listen
+#' sam1 <- getHarmonics(440,1)
+#' plot(sam1)
+#' sam2 <- getHarmonics(440,3)
+#' plot(sam2)
+#' \dontrun{listen(sam2)}
 #' @export
 getHarmonics <- function(freq,k,peak=0.03,decay=0.8,duration=1,sustain=0.25,type='sine'){
   if(sustain<0 | sustain>1){
@@ -31,7 +33,7 @@ getHarmonics <- function(freq,k,peak=0.03,decay=0.8,duration=1,sustain=0.25,type
 
 #' Single note from a synthesizer
 #'
-#' Creates one note with frequency freq from an additive, Hammond-inspire synth.
+#' Creates one note with frequency freq from an additive, Hammond-inspired synth.
 #' Higher harmonics decay faster and have smaller sustain.
 #' @param freq Numeric, base frequency in Hz
 #' @param nHarmonics Integer >=1, number of harmonics
@@ -42,11 +44,12 @@ getHarmonics <- function(freq,k,peak=0.03,decay=0.8,duration=1,sustain=0.25,type
 #' @param decayPar Numeric, the higher the value the smaller the decay time for higher harmonics
 #' @param sustainPar Numeric, the higher the value the smaller the sustain volume for higher harmonics
 #' @param type String, oscillator type, one of 'sine', 'saw', 'square' or 'triangle'.
-#'     If an unknowm string is provided, a sine oscillator will be used.
+#'     If an unknown string is provided, a sine oscillator will be used.
 #' @return An object of class 'soundSample'.
 #' @examples
-#' sam <- getSynthNote(440,nHarmonics=7);plot(sam)
-#' # listen(sam) # uncomment to listen
+#' sam <- getSynthNote(440,nHarmonics=7)
+#' plot(sam)
+#' \dontrun{listen(sam)}
 #' @export
 getSynthNote <-function(freq,nHarmonics=5,
                         peak=0.03,decay=0.8,duration=1,sustain=0.25,
@@ -60,7 +63,7 @@ getSynthNote <-function(freq,nHarmonics=5,
 
 #' Synthesizer
 #'
-#' Creates an additive, Hammond-inspire Synthesizer.
+#' Creates an additive, Hammond-inspired Synthesizer.
 #' Higher harmonics decay faster and have smaller sustain.
 #' @param notes Character vector, note names
 #' @param nHarmonics Integer >=1, number of harmonics
@@ -71,12 +74,13 @@ getSynthNote <-function(freq,nHarmonics=5,
 #' @param decayPar Numeric, the higher the value the smaller the decay time for higher harmonics
 #' @param sustainPar Numeric, the higher the value the smaller the sustain volume for higher harmonics
 #' @param type String, oscillator type, one of 'sine', 'saw', 'square' or 'triangle'.
-#'     If an unknowm string is provided, a sine oscillator will be used.
+#'     If an unknown string is provided, a sine oscillator will be used.
 #' @return An object of class 'instrument'.
 #' @examples
 #' synth <- getSynth(c('E2','B2','E3','G3','A3'))
-#' w=play.instrument(synth,time=(0:(length(synth)-1))*0.5,fadeout=rep(Inf,length(synth)));plot(w)
-#' # play(w) # uncomment to listen
+#' w=play.instrument(synth,time=(0:(length(synth)-1))*0.5,fadeout=rep(Inf,length(synth)))
+#' tuneR::plot(w)
+#' \dontrun{tuneR::play(w)}
 #' @export
 getSynth <- function(notes,nHarmonics=5,
                      peak=0.03,decay=0.8,duration=1,sustain=0.25,

@@ -24,5 +24,5 @@ Creates a soundSample by repeating a user-provided pattern.
 \examples{
 sam <- oscillator_pattern(pattern=airquality$Ozone,freq=110,duration=0.1)
 plot(sam)
-# listen(sam) # uncomment to listen
+\dontrun{listen(sam)}
 }

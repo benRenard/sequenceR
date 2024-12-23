@@ -18,5 +18,5 @@ Convert a soundSample into a tuneR::Wave object.
 \examples{
 sam <- soundSample(sin(2*pi*seq(0,1,,44100)*440)) # 1-second A (440 Hz)
 w <- as.Wave(sam)
-plot(w)
+tuneR::plot(w)
 }

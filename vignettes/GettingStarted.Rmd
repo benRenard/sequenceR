@@ -31,6 +31,7 @@ The package `sequenceR` strongly builds on the package `tuneR` which will be sys
 
 ```{r}
 library(sequenceR)
+library(tuneR)
 ```
 
 # Basics: sound samples, sequencing and mixing.

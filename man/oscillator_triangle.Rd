@@ -24,5 +24,5 @@ Creates a soundSample using a triangle oscillator.
 \examples{
 sam <- oscillator_triangle(freq=220,duration=0.1)
 plot(sam)
-# listen(sam) # uncomment to listen
+\dontrun{listen(sam)}
 }

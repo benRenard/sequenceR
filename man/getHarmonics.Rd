@@ -37,7 +37,9 @@ An object of class 'soundSample'.
 Creates a sound sample corresponding to the kth harmonics of a given frequency
 }
 \examples{
-sam1 <- getHarmonics(440,1);plot(sam1)
-sam2 <- getHarmonics(440,3);plot(sam2)
-# listen(sam2) # uncomment to listen
+sam1 <- getHarmonics(440,1)
+plot(sam1)
+sam2 <- getHarmonics(440,3)
+plot(sam2)
+\dontrun{listen(sam2)}
 }

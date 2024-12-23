@@ -24,5 +24,5 @@ Creates a soundSample using a square oscillator.
 \examples{
 sam <- oscillator_square(freq=220,duration=0.1)
 plot(sam)
-# listen(sam) # uncomment to listen
+\dontrun{listen(sam)}
 }
