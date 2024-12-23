@@ -93,6 +93,7 @@ The second example below adds some noise to this perfect A note. For
 more approaches to generate sound, see [sound
 synthesis](https://en.wikipedia.org/wiki/Synthesizer#Sound_synthesis).
 
+    set.seed(123456)
     noisyA <- soundSample(wave=w+0.1*rnorm(n))
     # listen(noisyA) # uncomment to listen to the sample
     plot(noisyA)
