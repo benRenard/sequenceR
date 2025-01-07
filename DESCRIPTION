@@ -1,6 +1,6 @@
 Package: sequenceR
 Type: Package
-Title: An R-Based Sequencer for Data Sonification
+Title: A Simple Sequencer for Data Sonification
 Version: 1.0.0
 Authors@R: c(
     person("Benjamin", "Renard", email = "benjamin.renard@inrae.fr",role = c("aut", "cre","cph"),comment = c(ORCID = "0000-0001-8447-5430")),
