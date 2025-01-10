@@ -18,5 +18,9 @@ Listen to a sound sample. Based on tuneR function 'play'
 \examples{
 # Define sound sample
 sam <- soundSample(sin(2*pi*seq(0,1,,44100)*440)+0.1*rnorm(44100)) # 1-second noisy A
-\dontrun{listen(sam)}
+\dontrun{
+# This line of code is wrapped in \dontrun{} since it relies
+# on an external audio player to listen to the audio sample.
+# See ?tuneR::setWavPlayer for setting a default player.
+listen(sam)}
 }

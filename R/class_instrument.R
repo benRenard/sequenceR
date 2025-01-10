@@ -49,7 +49,11 @@ instrument<-function(samples,notes=as.character(1:length(samples))){
 #' w=play.instrument(onTheMoon)
 #' # View the result
 #' tuneR::plot(w)
-#' \dontrun{tuneR::play(w)}
+#' \dontrun{
+#' # This line of code is wrapped in \dontrun{} since it relies
+#' # on an external audio player to play the audio sample.
+#' # See ?tuneR::setWavPlayer for setting a default player.
+#' tuneR::play(w)}
 #' # Use options
 #' w=play.instrument(onTheMoon,time=c(0,0.2,0.4,0.6,0.8,0.9),
 #'                   notes=c('A2','G4','D4','C4','A3','A2'),
@@ -57,7 +61,11 @@ instrument<-function(samples,notes=as.character(1:length(samples))){
 #'                   fadeout=c(Inf,0.01,0.01,0.01,Inf,Inf))
 #' # View the result
 #' tuneR::plot(w)
-#' \dontrun{tuneR::play(w)}
+#' \dontrun{
+#' # This line of code is wrapped in \dontrun{} since it relies
+#' # on an external audio player to play the audio sample.
+#' # See ?tuneR::setWavPlayer for setting a default player.
+#' tuneR::play(w)}
 #' @export
 play.instrument <-function (inst,notes=1:length(inst),
                time=seq(0,(length(notes)-1)*0.25,length.out=length(notes)),

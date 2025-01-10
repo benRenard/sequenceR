@@ -1,13 +1,13 @@
 Package: sequenceR
 Type: Package
 Title: A Simple Sequencer for Data Sonification
-Version: 1.0.0
+Version: 1.0.1
 Authors@R: c(
     person("Benjamin", "Renard", email = "benjamin.renard@inrae.fr",role = c("aut", "cre","cph"),comment = c(ORCID = "0000-0001-8447-5430")),
     person("INRAE", role = c("fnd")),
     person("European Commission", role = c("fnd"),comment = c("This project has received funding from the European Union’s Horizon 2020 research and innovation programme under the Marie Sklodowska-Curie grant agreement No 835496")))
 Description: A rudimentary sequencer to define, manipulate and mix sound samples.
-    The underlying motivation is to sonify data.
+    The underlying motivation is to sonify data, as demonstrated in the blog <https://globxblog.github.io/>, the presentation by Renard and Le Bescond (2022, <https://hal.science/hal-03710340v1>) or the poster by Renard et al. (2023, <https://hal.inrae.fr/hal-04388845v1>).
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

@@ -15,7 +15,11 @@
 #' plot(sam1)
 #' sam2 <- getHarmonics(440,3)
 #' plot(sam2)
-#' \dontrun{listen(sam2)}
+#' \dontrun{
+#' # This line of code is wrapped in \dontrun{} since it relies
+#' # on an external audio player to listen to the audio sample.
+#' # See ?tuneR::setWavPlayer for setting a default player.
+#' listen(sam2)}
 #' @export
 getHarmonics <- function(freq,k,peak=0.03,decay=0.8,duration=1,sustain=0.25,type='sine'){
   if(sustain<0 | sustain>1){
@@ -49,7 +53,11 @@ getHarmonics <- function(freq,k,peak=0.03,decay=0.8,duration=1,sustain=0.25,type
 #' @examples
 #' sam <- getSynthNote(440,nHarmonics=7)
 #' plot(sam)
-#' \dontrun{listen(sam)}
+#' \dontrun{
+#' # This line of code is wrapped in \dontrun{} since it relies
+#' # on an external audio player to listen to the audio sample.
+#' # See ?tuneR::setWavPlayer for setting a default player.
+#' listen(sam)}
 #' @export
 getSynthNote <-function(freq,nHarmonics=5,
                         peak=0.03,decay=0.8,duration=1,sustain=0.25,
@@ -80,7 +88,11 @@ getSynthNote <-function(freq,nHarmonics=5,
 #' synth <- getSynth(c('E2','B2','E3','G3','A3'))
 #' w=play.instrument(synth,time=(0:(length(synth)-1))*0.5,fadeout=rep(Inf,length(synth)))
 #' tuneR::plot(w)
-#' \dontrun{tuneR::play(w)}
+#' \dontrun{
+#' # This line of code is wrapped in \dontrun{} since it relies
+#' # on an external audio player to play the audio sample.
+#' # See ?tuneR::setWavPlayer for setting a default player.
+#' tuneR::play(w)}
 #' @export
 getSynth <- function(notes,nHarmonics=5,
                      peak=0.03,decay=0.8,duration=1,sustain=0.25,

@@ -41,5 +41,9 @@ sam1 <- getHarmonics(440,1)
 plot(sam1)
 sam2 <- getHarmonics(440,3)
 plot(sam2)
-\dontrun{listen(sam2)}
+\dontrun{
+# This line of code is wrapped in \dontrun{} since it relies
+# on an external audio player to listen to the audio sample.
+# See ?tuneR::setWavPlayer for setting a default player.
+listen(sam2)}
 }

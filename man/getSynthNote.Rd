@@ -46,5 +46,9 @@ Higher harmonics decay faster and have smaller sustain.
 \examples{
 sam <- getSynthNote(440,nHarmonics=7)
 plot(sam)
-\dontrun{listen(sam)}
+\dontrun{
+# This line of code is wrapped in \dontrun{} since it relies
+# on an external audio player to listen to the audio sample.
+# See ?tuneR::setWavPlayer for setting a default player.
+listen(sam)}
 }

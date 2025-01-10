@@ -68,7 +68,11 @@ plot.envelope <- function(x,...){
 #' # Compare waveforms
 #' plot(sam,main='before')
 #' plot(res,main='after')
-#' \dontrun{listen(res)}
+#' \dontrun{
+#' # This line of code is wrapped in \dontrun{} since it relies
+#' # on an external audio player to listen to the audio sample.
+#' # See ?tuneR::setWavPlayer for setting a default player.
+#' listen(res)}
 #' @export
 applyEnvelope <- function(sample,env){
   # Check envelop values are between 0 and 1

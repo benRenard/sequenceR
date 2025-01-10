@@ -47,5 +47,9 @@ Higher harmonics decay faster and have smaller sustain.
 synth <- getSynth(c('E2','B2','E3','G3','A3'))
 w=play.instrument(synth,time=(0:(length(synth)-1))*0.5,fadeout=rep(Inf,length(synth)))
 tuneR::plot(w)
-\dontrun{tuneR::play(w)}
+\dontrun{
+# This line of code is wrapped in \dontrun{} since it relies
+# on an external audio player to play the audio sample.
+# See ?tuneR::setWavPlayer for setting a default player.
+tuneR::play(w)}
 }

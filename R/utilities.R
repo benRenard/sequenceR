@@ -19,7 +19,11 @@
 #' s <- sequence(snare,time=2*c(4,12)/16)
 #' # Mix the 3 tracks
 #' m1 <- mix(list(hh,k,s))
-#' \dontrun{tuneR::play(m1)}
+#' \dontrun{
+#' # All calls to function 'tuneR::play' ar wrapped in \dontrun{} since they rely
+#' # on an external audio player to play the audio sample.
+#' # See ?tuneR::setWavPlayer for setting a default player.
+#' tuneR::play(m1)}
 #' # Try with less hihat, more kick
 #' m2 <- mix(list(hh,k,s),volume=c(0.3,1,0.8))
 #' \dontrun{tuneR::play(m2)}

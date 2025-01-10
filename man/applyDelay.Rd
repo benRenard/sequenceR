@@ -27,7 +27,11 @@ notes=c('E3','G3','A3','B3','D4','E4','G4')
 synth=getSynth(notes)
 raw=as.soundSample(play.instrument(synth,notes=notes[c(1,2,3,2,3,4,3,4,5,4,5,6,5,6,7)]))
 plot(raw)
-\dontrun{listen(raw)}
+\dontrun{
+# All calls to function 'listen' are wrapped in \dontrun{} since
+# they rely on an external audio player to listen to the audio samples.
+# See ?tuneR::setWavPlayer for setting a default player.
+listen(raw)}
 # Single echo by default
 cooked=applyDelay(raw)
 plot(cooked)

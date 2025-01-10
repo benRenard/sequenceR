@@ -43,7 +43,11 @@ sam <- soundSample(sin(2*pi*seq(0,1,,44100)*440)+0.1*rnorm(44100)) # 1-second no
 s <- sequence(sam,time=c(0,0.5,0.75),letRing=FALSE,volume=c(0.4,1,1),pan=c(-1,0,1))
 # View the result
 tuneR::plot(s)
-\dontrun{tuneR::play(s)}
+\dontrun{
+# All calls to function 'tuneR::play' are wrapped in \dontrun{} since
+# they rely on an external audio player to play the audio sample.
+# See ?tuneR::setWavPlayer for setting a default player.
+tuneR::play(s)}
 #' EXAMPLE 2 - make it funkyer
 # 2-second sequence based on hi-hat sample
 s <- sequence(hiHat,time=seq(0,2,,16),volume=rep(c(1,rep(0.5,3)),4))

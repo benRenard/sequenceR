@@ -24,5 +24,9 @@ Creates a soundSample using a sine oscillator.
 \examples{
 sam <- oscillator_sine(freq=220,duration=0.1)
 plot(sam)
-\dontrun{listen(sam)}
+\dontrun{
+# This line of code is wrapped in \dontrun{} since it relies
+# on an external audio player to listen to the audio sample.
+# See ?tuneR::setWavPlayer for setting a default player.
+listen(sam)}
 }
